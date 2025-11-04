@@ -44,9 +44,9 @@ Plataformas: [ROS (Robot Operating System), OpenCV, TensorFlow, etc.]
 
 Inteligencia Artificial: [Redes neuronales, visión computacional, algoritmos de machine learning, etc.]
 
-##Listado de componentes
+## Listado de componentes
 
-BOM
+-BOM-
 
 ## Esquematicos
 A continuación se presentan los esquemáticos y diagramas de diseño que explican cómo se ensamblan y operan los sistemas del proyecto:
@@ -54,13 +54,13 @@ A continuación se presentan los esquemáticos y diagramas de diseño que explic
 ## Fotos / videos
 Fotos de detalle del modelo completo:
 
-<img width="1045" height="719" alt="Image" src="https://github.com/user-attachments/assets/e5e8e849-fd24-44ea-bada-80cbff33d3da" />
+<img width="1186" height="757" alt="Image" src="https://github.com/user-attachments/assets/71f6aba0-a154-4566-917d-9b140b0019e3" />
 <img width="1076" height="349" alt="Image" src="https://github.com/user-attachments/assets/d32559f7-db63-44ba-8a2f-0f309882cbad" />
 <img width="1351" height="733" alt="Image" src="https://github.com/user-attachments/assets/282896cd-11f0-4a30-b808-303dae3bc109" />
 <img width="1075" height="642" alt="Image" src="https://github.com/user-attachments/assets/e76e9b4c-4a2d-4bfe-8e72-5bbad9504a32" />
 <img width="686" height="509" alt="Image" src="https://github.com/user-attachments/assets/d8d6b97d-05f1-4d76-9329-75389ea69314" />
-<img width="889" height="693" alt="Image" src="https://github.com/user-attachments/assets/699a483f-ee6d-461c-a317-fea6d5491d8e" />
-<img width="1058" height="725" alt="Image" src="https://github.com/user-attachments/assets/25d69f92-a21b-4755-ba29-4997b0ef8d05" />
+<img width="1021" height="690" alt="Image" src="https://github.com/user-attachments/assets/1efcddf9-8e2e-47e9-899d-4249d0af6158" />
+<img width="985" height="623" alt="Image" src="https://github.com/user-attachments/assets/f61ff91f-1e12-4905-afd6-db76f77e392e" />
 
 ## Autor
 Este proyecto fue realizado por Audisio Juan PAblo, Garrahan Alan, y Reyna Valentin como parte de la carrera de Ingeniería Mecatrónica en la Facultad de Ingeniería de la Universidad Nacional de Lomas de Zamora.
