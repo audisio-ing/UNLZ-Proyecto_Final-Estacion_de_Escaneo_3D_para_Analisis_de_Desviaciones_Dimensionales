@@ -11,14 +11,16 @@ Buscamos desarrollar una solución innovadora para el control de calidad, un nue
 
 Una línea de control integral equipada con un scanner 3D funcionando con el principio de triangulación láser, con el fin de detección de fallas en matrices destinadas a producciones en serie. Todo unido a traves de una cinta transportadora y software de control.
 
-Las piezas ingresarán al sistema a través de una cinta transportadora y serán posicionadas dentro de la estación de escaneo 3D. Tras ser escaneadas obtendremos una nube de puntos representativa de las dimensiones del objeto, a partir de la cual se realizarán comparaciones con el modelo patrón de la misma a fin de determinar posibles fallas y deformaciones en la misma causadas por la matriz, que puedan afectar su funcionamiento
-<img width="889" height="693" alt="Image" src="https://github.com/user-attachments/assets/699a483f-ee6d-461c-a317-fea6d5491d8e" />
-<img width="1058" height="725" alt="Image" src="https://github.com/user-attachments/assets/25d69f92-a21b-4755-ba29-4997b0ef8d05" />
+Las piezas ingresarán al sistema a través de una cinta transportadora y serán posicionadas dentro de la estación de escaneo 3D. Tras ser escaneadas obtendremos una nube de puntos representativa de las dimensiones del objeto, a partir de la cual se realizarán comparaciones con el modelo patrón de la misma a fin de determinar posibles fallas y deformaciones en la misma causadas por la matriz, que puedan afectar su funcionamiento.
+
 <img width="1045" height="719" alt="Image" src="https://github.com/user-attachments/assets/e5e8e849-fd24-44ea-bada-80cbff33d3da" />
 <img width="1076" height="349" alt="Image" src="https://github.com/user-attachments/assets/d32559f7-db63-44ba-8a2f-0f309882cbad" />
-<img width="711" height="349" alt="Image" src="https://github.com/user-attachments/assets/bcb61308-42c2-4fdd-91a2-48318b8be97d" />
+<img width="1351" height="733" alt="Image" src="https://github.com/user-attachments/assets/282896cd-11f0-4a30-b808-303dae3bc109" />
 <img width="1075" height="642" alt="Image" src="https://github.com/user-attachments/assets/e76e9b4c-4a2d-4bfe-8e72-5bbad9504a32" />
 <img width="686" height="509" alt="Image" src="https://github.com/user-attachments/assets/d8d6b97d-05f1-4d76-9329-75389ea69314" />
+<img width="889" height="693" alt="Image" src="https://github.com/user-attachments/assets/699a483f-ee6d-461c-a317-fea6d5491d8e" />
+<img width="1058" height="725" alt="Image" src="https://github.com/user-attachments/assets/25d69f92-a21b-4755-ba29-4997b0ef8d05" />
+
 ## ALCANCE
 
 Al fin de la cursada se presentará un prototipo funcional del sistema que cumpla de forma eficaz la tarea propuesta, no podemos asegurar un funcionamiento eficiente ya que el mismo dependerá de los componentes que seamos capaces de obtener.
