@@ -7,7 +7,7 @@ En la Universidad Nacional de Lomas de Zamora, nuestra Facultad de Ingeniería s
 El objetivo de este proyecto es buscar una solucion innovadora para el control de calidad, un nuevo enfoque que permita un control detallado pieza por pieza asegurándose de que el producto final cumpla con los estándares requeridos. Garantizar la precisión, consistencia y velocidad en la detección de defectos y variaciones en las piezas.
 ## Indice
 
-##Descripción
+## Descripción
 
 Este proyecto se basa en una línea de control integral equipada con un scanner 3D funcionando con el principio de triangulación láser, con el fin de detección de fallas en procesos productivos con matrices destinadas a producciones en serie. Todo unido a traves de una cinta transportadora y software de control.
 
@@ -22,15 +22,23 @@ Paso 2: Descripción del segundo paso, etc.
 
 Paso X: Cualquier otro paso relevante que se deba seguir.
 
-##Tecnologías utilizadas
+## Tecnologías utilizadas
 
 Este proyecto fue desarrollado utilizando una variedad de tecnologías, incluyendo:
 
-Robótica: [Arduino, Raspberry Pi, servomotores, motores paso a paso, etc.]
+Robótica:
+Arduino Uno
+Motores paso a paso Nema 17
+Engranajes y poleas
+Laser de barra
 
-Electrónica: [Sensores, actuadores, circuitos electrónicos, controladores, etc.]
+Electrónica: 
+Controladores A4988 de motores paso a paso
+Resistencias
+Capacitores
 
-Programación: [Python, C++, JavaScript, MATLAB, etc.]
+Programación: 
+Python y Arduino
 
 Plataformas: [ROS (Robot Operating System), OpenCV, TensorFlow, etc.]
 
@@ -38,16 +46,12 @@ Inteligencia Artificial: [Redes neuronales, visión computacional, algoritmos de
 
 ##Listado de componentes
 
-Componente 1: Descripción del componente 1 (por ejemplo, "Motor paso a paso").
+BOM
 
-Componente 2: Descripción del componente 2 (por ejemplo, "Placa Arduino").
-
-Componente 3: Descripción del componente 3, etc.
-
-##Esquematicos
+## Esquematicos
 A continuación se presentan los esquemáticos y diagramas de diseño que explican cómo se ensamblan y operan los sistemas del proyecto:
 
-##Fotos / videos
+## Fotos / videos
 Fotos de detalle del modelo completo:
 
 <img width="1045" height="719" alt="Image" src="https://github.com/user-attachments/assets/e5e8e849-fd24-44ea-bada-80cbff33d3da" />
@@ -58,10 +62,10 @@ Fotos de detalle del modelo completo:
 <img width="889" height="693" alt="Image" src="https://github.com/user-attachments/assets/699a483f-ee6d-461c-a317-fea6d5491d8e" />
 <img width="1058" height="725" alt="Image" src="https://github.com/user-attachments/assets/25d69f92-a21b-4755-ba29-4997b0ef8d05" />
 
-##Autor
+## Autor
 Este proyecto fue realizado por Audisio Juan PAblo, Garrahan Alan, y Reyna Valentin como parte de la carrera de Ingeniería Mecatrónica en la Facultad de Ingeniería de la Universidad Nacional de Lomas de Zamora.
 
-##Carpetas del Proyecto
+## Carpetas del Proyecto
 
 A continuación se detallan las carpetas que estructuran este repositorio:
 
