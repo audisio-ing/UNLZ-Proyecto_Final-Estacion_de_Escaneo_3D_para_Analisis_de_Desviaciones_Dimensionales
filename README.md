@@ -26,23 +26,37 @@ Paso X: Cualquier otro paso relevante que se deba seguir.
 
 Este proyecto fue desarrollado utilizando una variedad de tecnologías, incluyendo:
 
-Robótica:
-Arduino Uno
-Motores paso a paso Nema 17
-Engranajes y poleas
-Laser de barra
+**Robótica:**
 
-Electrónica: 
-Controladores A4988 de motores paso a paso
-Resistencias
-Capacitores
+-Arduino Uno
 
-Programación: 
-Python y Arduino
+-Motores paso a paso Nema 17
 
-Plataformas: [ROS (Robot Operating System), OpenCV, TensorFlow, etc.]
+-Engranajes y poleas
 
-Inteligencia Artificial: [Redes neuronales, visión computacional, algoritmos de machine learning, etc.]
+-Laser de barra
+
+**Electrónica:**
+
+-Controladores A4988 de motores paso a paso
+
+-Sensor TOF 
+
+-Sensor Efecto Hall
+
+-Regulador Integrado de voltaje 5v
+
+-Resistencias
+
+-Capacitores
+
+**Programación:**
+
+-Python y Arduino
+
+**Plataformas:** [ROS (Robot Operating System), OpenCV, TensorFlow, etc.]
+
+**Inteligencia Artificial:** [Redes neuronales, visión computacional, algoritmos de machine learning, etc.]
 
 ## Listado de componentes
 
