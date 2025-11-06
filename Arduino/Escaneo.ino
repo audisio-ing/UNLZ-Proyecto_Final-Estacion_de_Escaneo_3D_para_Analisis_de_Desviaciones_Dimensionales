@@ -1,4 +1,5 @@
-#include <Adafruit_VL6180X.h> 
+#include <Adafruit_VL6180X.h>
+#include <AccelStepper.h> // NUEVO: Incluir la biblioteca
 
 // Sensor tof
 Adafruit_VL6180X vl = Adafruit_VL6180X();
@@ -10,36 +11,40 @@ const int stepPinCinta = 9;
 const int dirPinScanner = 10;
 const int stepPinScanner = 11;
 
+// NUEVO: Crear el objeto AccelStepper para la cinta
+// (Modo DRIVER, pin de Step, pin de Dirección)
+AccelStepper stepperCinta(AccelStepper::DRIVER, stepPinCinta, dirPinCinta);
+
 // Variables Homing
-bool homing = false;                  // Indica si se hizo el homing
-int lastState = -1;                   // Ultimo estado del sensor
-const int sensorPin = A0;             // Sensor magnético
+bool homing = false;
+int lastState = -1;
+const int sensorPin = A0;
 
 // Variables Cinta
-const int pasosPorMuestra = 50;       // Cada cuantos pasos toma una muestra
-const int velRap = 1;                 // Velocidad de desplazamiento de la cinta
-const int pasosSalida = 14000;        // Pasos de la cinta para expulsar la pieza
-const int muestrasSensado = 8;        // Intervalo de pasos para sensar en el centrado
-const int pasosExtra = 825;           // Pasos extra para centrar correctamente la pieza
+const int pasosPorMuestra = 75;      // MODIFICADO: 75 pasos
+// const int velRap = 1;              // YA NO SE USA: AccelStepper maneja la velocidad
+const int pasosSalida = 14000;
+const int muestrasSensado = 8;
+const int pasosExtra = 780;
 
 // Variables Escaneo
-const int stepsPerRevMotor = 3200;    // 200 * 16 (1/16 microstepping)
-const float gearRatio = 40.0 / 24.0;  // Relación de engranajes
-const int delayEscaneo = 1250;        // Tiempo entre mediciones
-const int delayPasos = 6;             // Tiempo entre pasos en microsegundos
-int muestras = 0;                     // N° de muestras en 360°, ingresado por el usuario
-float pasoCamara = 0.0;               // Grados a moverse entre cada muestra
+const int stepsPerRevMotor = 3200;
+const float gearRatio = 40.0 / 24.0;
+const int delayEscaneo = 1250;
+const int delayPasos = 6;
+int muestras = 0;
+float pasoCamara = 0.0;
 
 void setup() {
   pinMode(dirPinScanner, OUTPUT);
   pinMode(stepPinScanner, OUTPUT);
-  pinMode(dirPinCinta, OUTPUT);
-  pinMode(stepPinCinta, OUTPUT);
+  // pinMode(dirPinCinta, OUTPUT);    // No es necesario, AccelStepper lo maneja
+  // pinMode(stepPinCinta, OUTPUT);   // No es necesario, AccelStepper lo maneja
 
-  digitalWrite(dirPinCinta, HIGH);  // Sentido de avance
+  // digitalWrite(dirPinCinta, HIGH); // No es necesario, AccelStepper lo maneja
 
-  pinMode(enable, OUTPUT);          // Enable motores
-  digitalWrite(enable, LOW);        // LOW para activarlos
+  pinMode(enable, OUTPUT);
+  digitalWrite(enable, LOW);
 
   Serial.begin(115200);
 
@@ -48,10 +53,36 @@ void setup() {
     Serial.println("Error: no se encontró VL6180X. Verifica conexiones.");
     while (1);
   }
+
+  // NUEVO: Configurar los parámetros de aceleración para la cinta
+  stepperCinta.setMaxSpeed(3200.0);
+  stepperCinta.setAcceleration(6000.0);
 }
 
+// ===============================================================
+// NUEVA FUNCIÓN "HELPER" PARA MOVER LA CINTA
+// ===============================================================
+/**
+ * @brief Mueve la cinta un número relativo de pasos y espera a que termine.
+ * @param pasosRelativos Pasos a mover. Positivo para avanzar, negativo para retroceder.
+ */
+void moverCintaBloqueante(long pasosRelativos) {
+  // Establecer un nuevo objetivo RELATIVO a la posición actual
+  stepperCinta.move(pasosRelativos);
+
+  // Este bucle se ejecutará hasta que el motor llegue al objetivo.
+  // Es "bloqueante", lo cual es necesario para tu estructura de código.
+  while (stepperCinta.distanceToGo() != 0) {
+    stepperCinta.run(); // Ejecuta los pasos necesarios para la aceleración
+  }
+}
+
+// ===============================================================
+// El resto de tu código (Loop, Escaneo, Homing, etc.)
+// ===============================================================
+
 void loop() {
-  String input; // Recibe el input
+  String input;
 
   digitalWrite(enable, HIGH);
 
@@ -63,7 +94,6 @@ void loop() {
 
   if (input == "y" || input == "Y") {
     Serial.println("Modo automático activado.");
-
     digitalWrite(enable, LOW);
 
     Serial.println("Realizando homing...");
@@ -71,7 +101,7 @@ void loop() {
     Serial.println("Homing completado");
 
     Serial.println("Avanzando pieza...");
-    CintaCentrado();
+    CintaCentrado(); // MODIFICADO (internamente)
     Serial.println("Pieza en posición");
 
     Serial.println("¿Cuántas muestras desea tomar?");
@@ -86,13 +116,12 @@ void loop() {
     Serial.println("Escaneo finalizado");
 
     Serial.println("Expulsando pieza...");
-    CintaSalida();
+    CintaSalida(); // MODIFICADO (internamente)
     Serial.println("Pieza expulsada");
 
     digitalWrite(enable, HIGH);
-
     Serial.println("Motores desactivados");
-  } 
+  }
   else {
     // Modo Manual
     Serial.println("¿Realizar homing? (y/n)");
@@ -102,11 +131,9 @@ void loop() {
 
     if (input == "y" || input == "Y") {
       digitalWrite(enable, LOW);
-      
       Serial.println("Realizando homing...");
       Homing();
       Serial.println("Homing completado.");
-
       digitalWrite(enable, HIGH);
     }
 
@@ -117,11 +144,9 @@ void loop() {
 
     if (input == "y" || input == "Y") {
       digitalWrite(enable, LOW);
-
       Serial.println("Avanzando pieza...");
-      CintaCentrado();
+      CintaCentrado(); // MODIFICADO (internamente)
       Serial.println("Pieza en posición");
-
       digitalWrite(enable, HIGH);
     }
 
@@ -138,13 +163,11 @@ void loop() {
       muestras = input.toInt();
 
       pasoCamara = 360.0 / muestras;
-
       digitalWrite(enable, LOW);
 
       Serial.println("Iniciando escaneo...");
       Escaneo();
       Serial.println("Escaneo finalizado");
-
       digitalWrite(enable, HIGH);
     }
 
@@ -156,58 +179,49 @@ void loop() {
 
     if (input == "y" || input == "Y") {
       digitalWrite(enable, LOW);
-
       Serial.println("Expulsando pieza...");
-      CintaSalida();
+      CintaSalida(); // MODIFICADO (internamente)
       Serial.println("Pieza expulsada");
-
       digitalWrite(enable, HIGH);
     }
   }
 
   digitalWrite(enable, HIGH);
   Serial.println("Motores Desactivados");
-  
   delay(2000);
 }
 
+// ===============================================================
+// FUNCIONES DEL SCANNER (SIN MODIFICAR)
+// ===============================================================
 
 void Escaneo() {
-  bool escaneo = true; // Indica a la funcion moverMotor el sentido de giro
-  float pasosVuelta = 0; //Almacena la cantidad de pasos que luego retrocedera
+  bool escaneo = true;
+  float pasosVuelta = 0;
 
-  if(escaneo==true){ // Determina si escanear o no
-    
-    for (int i=0; i < muestras; i++) { // Escaneo
+  if (escaneo == true) {
+    for (int i = 0; i < muestras; i++) {
       float anguloCamara = i * pasoCamara;
+      delay(delayEscaneo);
+      Serial.println(anguloCamara, 2);
+      delay(delayEscaneo);
 
-      delay(delayEscaneo); // Para evitar vibraciones en el escaneo
-
-      Serial.println(anguloCamara, 2); // Enviar angulo actual, 2 decimales
-
-      delay(delayEscaneo); // Esperar mientras Python escanea
-
-      if (i < muestras - 1) { // Rotacion
+      if (i < muestras - 1) {
         float pasosMotor = (pasoCamara / 360.0) * stepsPerRevMotor * gearRatio;
         moverMotor(pasosMotor, escaneo);
-        
-        pasosVuelta += pasosMotor; // Angulo que luego retrocedera el motor
+        pasosVuelta += pasosMotor;
       }
     }
-
-    // Vuelta a 0, retrocediendo el total de angulos
     escaneo = false;
     moverMotor(pasosVuelta, escaneo);
   }
 }
 
-// Funcion para mover motor, recibe los pasos a mover y el sentido
-void moverMotor(float pasos,bool escaneo) {
+void moverMotor(float pasos, bool escaneo) {
   int pasosEnteros = round(pasos);
 
-  if(escaneo == true){
-    digitalWrite(dirPinScanner, HIGH); // Sentido antihorario
-
+  if (escaneo == true) {
+    digitalWrite(dirPinScanner, HIGH);
     for (int i = 0; i < pasosEnteros; i++) {
       digitalWrite(stepPinScanner, HIGH);
       delay(delayPasos);
@@ -215,20 +229,48 @@ void moverMotor(float pasos,bool escaneo) {
       delay(delayPasos);
     }
   }
-  else{
-    digitalWrite(dirPinScanner, LOW); // Sentido horario
-
-    // Movimiento más rapido para regreso
+  else {
+    digitalWrite(dirPinScanner, LOW);
     for (int i = 0; i < pasosEnteros; i++) {
       digitalWrite(stepPinScanner, HIGH);
-      delay(delayPasos / 3); 
+      delay(delayPasos / 3);
       digitalWrite(stepPinScanner, LOW);
       delay(delayPasos / 3);
     }
   }
 }
 
-// Funcion para sensar con el VL6180X
+void Homing() {
+  digitalWrite(dirPinScanner, LOW);
+  lastState = magnetico();
+
+  while (homing == false) {
+    digitalWrite(stepPinScanner, HIGH);
+    delay(delayPasos);
+    digitalWrite(stepPinScanner, LOW);
+    delay(delayPasos);
+
+    int currentState = magnetico();
+    if (currentState != lastState && currentState != -1) {
+      homing = true;
+    }
+  }
+  delay(1000);
+  moverMotor(640, true);
+}
+
+int magnetico() {
+  int value = analogRead(sensorPin);
+  if (value > 700) return 1;
+  if (value < 50) return 0;
+  return -1;
+}
+
+// ===============================================================
+// FUNCIONES DE MEDICIÓN Y CINTA (MODIFICADAS)
+// ===============================================================
+
+// Funcion para sensar con el VL6180X (SIN MODIFICAR)
 int medicion(int n = 5) {
   long suma = 0;
   for (int i = 0; i < n; i++) {
@@ -238,103 +280,57 @@ int medicion(int n = 5) {
   return suma / n; // Promedio
 }
 
+// ===============================================================
+// FUNCIONES DE LA CINTA (MODIFICADAS CON ACCELSTEPPER)
+// ===============================================================
+
 // Funcion para mover la cinta y centrar la pieza
 void CintaCentrado() {
   int pasosCentrado = 0;
-  int contadorPasos = 0;
   bool enRango = false;
 
-  digitalWrite(dirPinCinta, HIGH); // Sentido de avance
+  // Ya no se necesita 'digitalWrite(dirPinCinta, HIGH)'
+  // La función 'moverCintaBloqueante' maneja la dirección.
 
-  while(enRango == false){
-    digitalWrite(stepPinCinta, HIGH);
-    delay(velRap);
-    digitalWrite(stepPinCinta, LOW);
-    delay(velRap);
-    contadorPasos++;
+  // --- Parte 1: Avanzar hasta detectar la pieza ---
+  while (enRango == false) {
+    // Mueve 'pasosPorMuestra' (75) pasos hacia adelante y espera
+    moverCintaBloqueante(pasosPorMuestra);
 
-    if (contadorPasos >= pasosPorMuestra) {
-      contadorPasos = 0;
-      int distancia = medicion();
-
-      if(distancia < 120){
-        enRango = true;
-      }
+    int distancia = medicion();
+    if (distancia < 120) {
+      enRango = true;
     }
   }
 
-  while(enRango == true){
-    for(int i = 0; i < muestrasSensado; i++){
-      digitalWrite(stepPinCinta, HIGH);
-      delay(velRap);
-      digitalWrite(stepPinCinta, LOW);
-      delay(velRap);
+  // --- Parte 2: Avanzar mientras se detecta la pieza (para medirla) ---
+  while (enRango == true) {
+    // Mueve 'muestrasSensado' (8) pasos hacia adelante y espera
+    moverCintaBloqueante(muestrasSensado);
 
-      pasosCentrado++;
-    }
+    pasosCentrado += muestrasSensado; // Acumula los pasos medidos
 
     int distancia = medicion();
-
-    if(distancia > 120){
+    if (distancia > 120) {
       enRango = false;
     }
   }
 
-  if(pasosCentrado > 0){
-    digitalWrite(dirPinCinta, LOW); // Sentido Retroceso
-
-    for (int i = 0; i < (pasosCentrado/2); i++) {
-      digitalWrite(stepPinCinta, HIGH);
-      delay(velRap);
-      digitalWrite(stepPinCinta, LOW);
-      delay(velRap);
-    }
+  // --- Parte 3: Retroceder para centrar ---
+  if (pasosCentrado > 0) {
+    // Ya no se necesita 'digitalWrite(dirPinCinta, LOW)'
     
-    for (int i = 0; i < pasosExtra; i++) {
-      digitalWrite(stepPinCinta, HIGH);
-      delay(velRap);
-      digitalWrite(stepPinCinta, LOW);
-      delay(velRap);
-    }
+    // Calcula el retroceso total: la mitad de la pieza + un extra
+    long retrocesoTotal = (pasosCentrado / 2) + pasosExtra;
+
+    // Mueve el total de pasos en REVERSA (usando un número negativo)
+    moverCintaBloqueante(-retrocesoTotal);
   }
 }
 
-void CintaSalida(){
-  digitalWrite(dirPinCinta, HIGH); // Sentido de avance
-  for (int i = 0; i < int(pasosSalida); i++) {
-      digitalWrite(stepPinCinta, HIGH);
-      delay(velRap);
-      digitalWrite(stepPinCinta, LOW);
-      delay(velRap);
-  }
-}
+void CintaSalida() {
+  // Ya no se necesita 'digitalWrite(dirPinCinta, HIGH)'
 
-void Homing() {
-  digitalWrite(dirPinScanner, LOW); 
-  lastState = magnetico();
-
-  while(homing == false){
-    // Mover el motor
-    digitalWrite(stepPinScanner, HIGH);
-    delay(delayPasos);
-    digitalWrite(stepPinScanner, LOW);
-    delay(delayPasos);
-
-    int currentState = magnetico();
-
-    if (currentState != lastState && currentState != -1) {
-      homing = true;
-    }
-  }
-
-  delay(1000);
-  moverMotor(640, true);  // Mueve la camara unos pasos en el sentido contrario para despejar la cinta
-}
-
-// Leer sensor magnético
-int magnetico(){
-  int value = analogRead(sensorPin);
-  if (value > 700) return 1;   // polo +
-  if (value < 50) return 0;    // polo -
-  return -1;                   
+  // Mueve 'pasosSalida' pasos hacia adelante y espera
+  moverCintaBloqueante(pasosSalida);
 }
