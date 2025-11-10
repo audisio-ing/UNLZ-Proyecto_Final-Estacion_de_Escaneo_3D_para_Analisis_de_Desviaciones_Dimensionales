@@ -1,0 +1,11 @@
+| COMPONENTE                | CONSUMO MAXIMO [W] |
+| ------------------------- | ------------------ |
+| REGULADOR DE TENSION 7805 | 18                 |
+| CONTROLADOR A4988         | 0.000033           |
+| NEMA 17                   | 4.704              |
+| ARDUINO UNO               | 0.077              |
+| SENSOR HALL MA211F        | 0.4                |
+| PS3 EYE SCEH-00448        | 2.5                |
+| LASER HLM1230             | 0.005              |
+| VL6180X                   | 0.00493            |
+| CONSUMO TOTAL MAXIMO      | 25.690963          |
