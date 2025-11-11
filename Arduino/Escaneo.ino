@@ -235,9 +235,8 @@ void moverMotor(float pasos, bool escaneo) {
 // Funcion de homing del motor del escaner
 void Homing() {
 
-   // Velocidad y aceleración para el homing
+   // Velocidad para el homing
    stepperScanner.setMaxSpeed(velLenta);
-   stepperScanner.setAcceleration(acelScanner);
 
    // Mueve hacia atrás (negativo) una distancia muy grande
    stepperScanner.move(-1000000); 
