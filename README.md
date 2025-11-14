@@ -102,6 +102,9 @@ Este proyecto fue desarrollado utilizando una variedad de tecnologías, incluyen
 
 ## Esquematicos
 A continuación se presentan los esquemáticos y diagramas de diseño que explican cómo se ensamblan y operan los sistemas del proyecto:
+<img width="13244" height="9355" alt="Image" src="https://github.com/user-attachments/assets/6662ea1c-b2b9-45bd-9ced-6135f363e980" />
+<img width="6616" height="4677" alt="Image" src="https://github.com/user-attachments/assets/e3c31136-6ab0-4f31-bc53-0533ac6cd761" />
+<img width="13244" height="9355" alt="Image" src="https://github.com/user-attachments/assets/705479f7-7092-40ff-b4d8-b58947d4625a" />
 
 ## Fotos / videos
 Fotos de detalle del modelo completo:
