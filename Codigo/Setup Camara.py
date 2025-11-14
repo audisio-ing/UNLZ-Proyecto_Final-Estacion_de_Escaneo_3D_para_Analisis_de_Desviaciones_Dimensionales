@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
 import json
 import serial.tools.list_ports
@@ -9,10 +9,24 @@ import serial.tools.list_ports
 # Archivo de configuración
 CONFIG_FILE = "Setup.json"
 
+# Paleta de colores - Tema Oscuro
+COLORS = {
+    'bg_principal': '#1a1a2e',      # Negro profundo
+    'bg_secundario': '#2d2d44',     # Gris oscuro
+    'bg_input': '#3b3b5c',          # Gris más oscuro
+    'acento_primario': '#3b24c8',   # Púrpura
+    'acento_hover': '#5636d3',      # Púrpura claro
+    'exito': '#00d966',             # Verde neon
+    'error': '#f44336',             # Rojo
+    'texto_principal': 'white',     # Blanco
+    'texto_secundario': '#b0b0b0'   # Gris claro
+}
+
 # Variables
 cam_index = 0
 threshold_value = 100
 arduino_port = ""
+config_guardada = False
 
 cap = None
 
@@ -29,6 +43,7 @@ def load_config():
         pass
 
 def save_config():
+    global config_guardada
     config = {
         "camera_index": cam_index,
         "threshold": threshold_value,
@@ -36,6 +51,10 @@ def save_config():
     }
     with open(CONFIG_FILE, "w") as f:
         json.dump(config, f, indent=4)
+    
+    config_guardada = True
+    messagebox.showinfo("Éxito", "Configuración guardada correctamente")
+    root.after(2000, lambda: globals().__setitem__('config_guardada', False))
 
 def update_camera(index):
     global cap, cam_index
@@ -87,13 +106,13 @@ def process_frame():
 def update_frame():
     frame = process_frame()
     if frame is not None:
-        # Convertir BGR → RGB
+        # SIN redimensionar - usar dimensiones reales 640x480
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         img = Image.fromarray(frame_rgb)
         imgtk = ImageTk.PhotoImage(image=img)
         video_label.imgtk = imgtk
         video_label.configure(image=imgtk)
-    root.after(10, update_frame)  # refrescar cada 10ms
+    root.after(33, update_frame)  # refrescar cada 33ms (~30 FPS)
 
 def on_cam_change(val):
     update_camera(int(val))
@@ -109,38 +128,172 @@ def on_port_select(event):
 
 # Interfaz Tkinter
 root = tk.Tk()
-root.title("Setup Cámara")
+root.title("Setup Cámara y Arduino")
+root.geometry("1024x768")
+root.resizable(False, False)
+root.configure(bg=COLORS['bg_principal'])
+
+# Aplicar tema oscuro a ttk
+style = ttk.Style()
+style.theme_use('clam')
+style.configure('TCombobox', fieldbackground=COLORS['bg_input'], background=COLORS['bg_input'])
+style.configure('TScale', background=COLORS['bg_principal'])
 
 # Cargar configuración antes de crear UI
 load_config()
 cap = cv2.VideoCapture(cam_index)
 
-# Video
-video_label = tk.Label(root)
+# === TÍTULO ===
+titulo_frame = tk.Frame(root, bg=COLORS['bg_principal'])
+titulo_frame.pack(fill='x', padx=12, pady=5)
+
+titulo = tk.Label(titulo_frame, text="CONFIGURACIÓN",
+                 font=("Segoe UI", 14, "bold"), bg=COLORS['bg_principal'], 
+                 fg=COLORS['texto_principal'])
+titulo.pack(anchor='w')
+
+separador = tk.Frame(root, bg=COLORS['acento_primario'], height=1)
+separador.pack(fill='x', padx=0)
+
+# === ÁREA DE VIDEO (640x480 - FIJO, SIN ESCALAR) ===
+video_frame = tk.Frame(root, bg=COLORS['bg_secundario'])
+video_frame.pack(pady=5, padx=12, fill='both', expand=False)
+
+video_label_titulo = tk.Label(video_frame, text="Vista Previa Cámara",
+                             font=("Segoe UI", 9, "bold"), 
+                             bg=COLORS['bg_secundario'], fg=COLORS['texto_principal'])
+video_label_titulo.pack(pady=3)
+
+# Label EXACTAMENTE 640x480 - SIN REDIMENSIONAR
+video_label = tk.Label(video_frame, bg='#000000', width=640, height=480)
 video_label.pack()
 
-# Cámara
-tk.Label(root, text="Índice de cámara (0-3):").pack()
-cam_slider = tk.Scale(root, from_=0, to=3, orient="horizontal", command=on_cam_change)
+# === CONTROLES - LAYOUT HORIZONTAL COMPACTO ===
+controles_frame_main = tk.Frame(root, bg=COLORS['bg_principal'])
+controles_frame_main.pack(fill='x', padx=12, pady=4)
+
+# COLUMNA IZQUIERDA: Sliders verticales
+col_izquierda = tk.Frame(controles_frame_main, bg=COLORS['bg_principal'])
+col_izquierda.pack(side='left', fill='both', expand=True, padx=(0, 8))
+
+# --- Sección 1: Cámara ---
+camara_frame = tk.LabelFrame(col_izquierda, text="Cámara",
+                             font=("Segoe UI", 9, "bold"), 
+                             bg=COLORS['bg_secundario'], fg=COLORS['texto_principal'],
+                             padx=8, pady=6, relief='flat', bd=1)
+camara_frame.pack(fill='x', pady=3)
+
+cam_label = tk.Label(camara_frame, text="Índice (0-3):",
+                    font=("Segoe UI", 8), bg=COLORS['bg_secundario'], 
+                    fg=COLORS['texto_secundario'])
+cam_label.pack(anchor='w', pady=(0, 3))
+
+cam_slider = tk.Scale(camara_frame, from_=0, to=3, orient="horizontal", 
+                     command=on_cam_change, bg=COLORS['bg_principal'],
+                     fg=COLORS['texto_principal'], troughcolor=COLORS['bg_secundario'],
+                     highlightthickness=0, relief='flat', activebackground=COLORS['acento_primario'],
+                     length=150)
 cam_slider.set(cam_index)
-cam_slider.pack()
+cam_slider.pack(fill='x', padx=3)
 
-# Threshold
-tk.Label(root, text="Umbral de brillo:").pack()
-thresh_slider = tk.Scale(root, from_=0, to=255, orient="horizontal", command=on_threshold_change)
+# --- Sección 2: Threshold ---
+threshold_frame = tk.LabelFrame(col_izquierda, text="Threshold",
+                               font=("Segoe UI", 9, "bold"),
+                               bg=COLORS['bg_secundario'], fg=COLORS['texto_principal'],
+                               padx=8, pady=6, relief='flat', bd=1)
+threshold_frame.pack(fill='x', pady=3)
+
+thresh_label = tk.Label(threshold_frame, text="Brillo (0-255):",
+                       font=("Segoe UI", 8), bg=COLORS['bg_secundario'],
+                       fg=COLORS['texto_secundario'])
+thresh_label.pack(anchor='w', pady=(0, 3))
+
+thresh_slider = tk.Scale(threshold_frame, from_=0, to=255, orient="horizontal",
+                        command=on_threshold_change, bg=COLORS['bg_principal'],
+                        fg=COLORS['texto_principal'], troughcolor=COLORS['bg_secundario'],
+                        highlightthickness=0, relief='flat', activebackground=COLORS['acento_primario'],
+                        length=150)
 thresh_slider.set(threshold_value)
-thresh_slider.pack()
+thresh_slider.pack(fill='x', padx=3)
 
-threshold_label = tk.Label(root, text=f"Threshold: {threshold_value}")
-threshold_label.pack()
+threshold_label = tk.Label(threshold_frame, text=f"Valor: {threshold_value}",
+                          font=("Segoe UI", 8, "bold"), bg=COLORS['bg_secundario'],
+                          fg=COLORS['exito'])
+threshold_label.pack(anchor='w', padx=3, pady=(3, 0))
 
-# Puertos Arduino
-tk.Label(root, text="Puerto Arduino:").pack()
+# COLUMNA DERECHA: Arduino
+col_derecha = tk.Frame(controles_frame_main, bg=COLORS['bg_principal'])
+col_derecha.pack(side='right', fill='both', expand=True, padx=(8, 0))
+
+# --- Sección 3: Puerto Arduino ---
+arduino_frame = tk.LabelFrame(col_derecha, text="Arduino",
+                             font=("Segoe UI", 9, "bold"),
+                             bg=COLORS['bg_secundario'], fg=COLORS['texto_principal'],
+                             padx=8, pady=6, relief='flat', bd=1)
+arduino_frame.pack(fill='x', pady=3)
+
+port_label = tk.Label(arduino_frame, text="Puerto Serial:",
+                     font=("Segoe UI", 8), bg=COLORS['bg_secundario'],
+                     fg=COLORS['texto_secundario'])
+port_label.pack(anchor='w', pady=(0, 3))
+
 ports = [port.device for port in serial.tools.list_ports.comports()]
-port_combo = ttk.Combobox(root, values=ports, state="readonly")
+port_combo = ttk.Combobox(arduino_frame, values=ports, state="readonly",
+                         font=("Segoe UI", 8), width=12)
 port_combo.set(arduino_port if arduino_port in ports else (ports[0] if ports else ""))
 port_combo.bind("<<ComboboxSelected>>", on_port_select)
-port_combo.pack()
+port_combo.pack(fill='x', pady=(0, 3), padx=3)
+
+# Información de puertos
+if ports:
+    port_info = tk.Label(arduino_frame, text=f"Disponibles: {', '.join(ports)}",
+                        font=("Segoe UI", 7, "italic"), bg=COLORS['bg_secundario'],
+                        fg=COLORS['texto_secundario'], justify='left', wraplength=120)
+else:
+    port_info = tk.Label(arduino_frame, text="⚠️ No detectados",
+                        font=("Segoe UI", 7, "italic"), bg=COLORS['bg_secundario'],
+                        fg=COLORS['error'])
+port_info.pack(anchor='w', padx=3, pady=(2, 0), fill='x')
+
+# === BOTONES DE ACCIÓN ===
+botones_frame = tk.Frame(root, bg=COLORS['bg_principal'])
+botones_frame.pack(fill='x', padx=12, pady=8)
+
+def crear_boton_mejorado(parent, text, command, bg_color, fg_color, 
+                         hover_bg, active_bg, font_size=10):
+    """Crea un botón con estilo mejorado y efectos hover"""
+    btn = tk.Button(parent, text=text, command=command,
+                   font=("Segoe UI", font_size, "bold"),
+                   bg=bg_color, fg=fg_color,
+                   activebackground=active_bg, activeforeground=fg_color,
+                   relief='flat', bd=0, padx=15, pady=7,
+                   cursor="hand2", highlightthickness=0)
+    
+    # Efectos hover
+    def on_enter(event):
+        btn.config(bg=hover_bg)
+    
+    def on_leave(event):
+        btn.config(bg=bg_color)
+    
+    btn.bind("<Enter>", on_enter)
+    btn.bind("<Leave>", on_leave)
+    
+    return btn
+
+btn_guardar = crear_boton_mejorado(botones_frame, "💾 GUARDAR",
+                                  save_config,
+                                  COLORS['exito'], COLORS['bg_principal'],
+                                  '#00ff7a', '#00e060',
+                                  font_size=10)
+btn_guardar.pack(side='left', padx=8, fill='x', expand=True)
+
+btn_cerrar = crear_boton_mejorado(botones_frame, "❌ CERRAR",
+                                 root.quit,
+                                 COLORS['acento_primario'], COLORS['texto_principal'],
+                                 COLORS['acento_hover'], '#4a3dd8',
+                                 font_size=10)
+btn_cerrar.pack(side='left', padx=8, fill='x', expand=True)
 
 # Loop de video
 update_frame()
