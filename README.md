@@ -1,4 +1,4 @@
-# UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales
+# UNLZ Proyecto Final: Estacion de Escaneo 3D para Análisis de Desviaciones Dimensionales
 <p align="center" width="100%">
     <img width="100%" src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Scanner_por_triangulacion_laser-ARG/blob/main/fotos/LOGO%20AZUL%20HORIZONTAL%20-%20fondo%20transparente.png">
 </p>
