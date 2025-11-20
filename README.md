@@ -1,8 +1,15 @@
-# UNLZ Proyecto Final: Estacion de Escaneo 3D para Análisis de Desviaciones Dimensionales
+<h2 align="center" style="font-size: 3em;">F.IU.N.L.Z. Proyecto Final</h2>
+<h1 align="center" style="font-size: 3em;">Estacion de Escaneo 3D para Análisis de Desviaciones Dimensionales</h1>
+
 <p align="center" width="100%">
     <img width="100%" src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Scanner_por_triangulacion_laser-ARG/blob/main/fotos/LOGO%20AZUL%20HORIZONTAL%20-%20fondo%20transparente.png">
 </p>
-En la Universidad Nacional de Lomas de Zamora, nuestra Facultad de Ingeniería se dedica a la formación de profesionales en diversas ramas de la ingeniería. Este repositorio corresponde al proyecto Final de la carrera de Ingeniería Mecatrónica, desarrollado a lo largo del 2025.
+Este repositorio corresponde al proyecto Final de la carrera de Ingeniería Mecatrónica, desarrollado a lo largo del 2025 en la Universidad Nacional de Lomas de Zamora, nuestra Facultad de Ingeniería.
+
+# Integrantes
+<p>👤 <a href="https://github.com/audisio-ing">Juan Pablo Audisio</a></p>
+<p>👤 <a href="https://github.com/IngGarrahan">Alan Garrahan</a></p>
+<p>👤 <a href="https://github.com/ValentinReyna">Valentín Julián Reyna</a></p>
 
 El objetivo de este proyecto es buscar una solucion innovadora para el control de calidad, un nuevo enfoque que permita un control detallado pieza por pieza asegurándose de que el producto final cumpla con los estándares requeridos. Garantizar la precisión, consistencia y velocidad en la detección de defectos y variaciones en las piezas.
 ## Indice
