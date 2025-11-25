@@ -7,12 +7,12 @@
   <em>Vista general</em>
 </p>
 
-# Team Members
+# Integrantes
 <p>👤 <a href="https://github.com/audisio-ing">Juan Pablo Audisio</a></p>
 <p>👤 <a href="https://github.com/IngGarrahan">Alan Garrahan</a></p>
 <p>👤 <a href="https://github.com/ValentinReyna">Valentín Julián Reyna</a></p>
 
-# Index
+# Indice
 - **1.0** [Introducción](#introducción)
 - **2.0** [Descripción del Sistema](#descripción-del-sistema)
 - **3.0** [Tecnologías y Recursos](#tecnologías-y-recursos)
@@ -63,12 +63,21 @@ A continuación se detalla en listas las diferentes tecnologías y recursos util
 | **Autodesk Fusion 360** | Diseño de componentes mecánicos y piezas a escanear. |
 | **OBS Studio** | Utilizado como intermediario, permite ajustar controles de la cámara no posibles en python. |
 | **CL-Eye Test** | Software utilizado para la conexión con la Cámara y drivers específicos. |
+| **Blender** | Renders del prototipo utilizados para visualización. |
 
 ## Librerias de Python
 
 | Librería | Descripción |
 | :--- | :--- |
 | **OpenCV** | Manejo de Cámara, captura de frames y detección del Láser |
+| **NumPy** | Procesamiento matemático de matrices y la nube de puntos |
+| **Pillow** | Procesamiento y manipulación básica de imágenes |
+| **PyVista** | Visualización 3D interactiva y renderizado de la nube de puntos |
+| **SciPy** | Algoritmos científicos para cálculos complejos y filtrado |
+| **PySerial** | Comunicación serial para el control del Arduino |
+| **PyInstaller** | Empaquetado del programa en un archivo ejecutable |
+| **Tkinter** | Diseño de interfaz visual de usuario (GUI) |
+
 
 ## Hardware y Electrónica
 
@@ -105,24 +114,24 @@ A continuación se detalla el BOM (Bill of Materials) del proyecto:
 
 <h1 align="center">Diseños y Esquemáticos</h1>
 
-Se presentan los esquemáticos y diagramas de diseño que explican el ensamblaje y la operación de los sistemas.
+Se presentan los esquemáticos y planos de vista explosionada de los diferentes mecanismos que componen al prototipo
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/6662ea1c-b2b9-45bd-9ced-6135f363e980" alt="Plano 1" width="800"/>
   <br>
-  <em>Plano General del Dispositivo</em>
+  <em>Vista explosionada del mecanismo del Escáner</em>
 </p>
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/e3c31136-6ab0-4f31-bc53-0533ac6cd761" alt="Circuito" width="800"/>
   <br>
-  <em>Esquemático de Conexiones Electrónicas</em>
+  <em>Vista explosionada de la Caja Contenedora</em>
 </p>
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/705479f7-7092-40ff-b4d8-b58947d4625a" alt="Plano 2" width="800"/>
   <br>
-  <em>Detalle de mecanismos</em>
+  <em>Vista explosionada del mecanismo de la Cinta Transportadora</em>
 </p>
 
 <h1 align="center">Instrucciones de Uso</h1>
@@ -141,7 +150,7 @@ Cualquier otro paso relevante que se deba seguir para iniciar el escaneo.
 
 <h1 align="center">Escaneos</h1>
 
-En esta sección se presentan los resultados obtenidos tras el proceso de digitalización. Las siguientes imágenes muestran la nube de puntos generada y las comparaciones dimensionales realizadas por el software.
+A continuación se muestran los resultados obtenidos del escaneo de las diferentes piezas planteadas, todos los escaneos fueron realizados con 100 muestras.
 
 <p align="center">
   <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/Escaneos/A.gif" alt="Escaneo A" width="30%"/>
