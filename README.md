@@ -1,4 +1,4 @@
-<h2 align="center">F.IU.N.L.Z. Proyecto Final</h2>
+<h2 align="center">F.I.U.N.L.Z. Proyecto Final</h2>
 <h1 align="center" style="font-size: 3em;">Estacion de Escaneo 3D para Análisis de Desviaciones Dimensionales</h1>
 
 <p align="center">
