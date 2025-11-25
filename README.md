@@ -2,9 +2,9 @@
 <h1 align="center" style="font-size: 3em;">Estacion de Escaneo 3D para Análisis de Desviaciones Dimensionales</h1>
 
 <p align="center">
-  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Scanner_por_triangulacion_laser-ARG/blob/main/fotos/LOGO%20AZUL%20HORIZONTAL%20-%20fondo%20transparente.png" alt="Logo Proyecto" width="100%"/>
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/Animaciones/Paneo.gif" alt="Demostración" width="300"/>
   <br>
-  <em>Scanner por triangulación láser - UNLZ</em>
+  <em>Vista general</em>
 </p>
 
 # Team Members
@@ -21,8 +21,9 @@
 - **4.0** [🔩 Listado de Componentes 🔩](#-listado-de-componentes-)
 - **5.0** [💡 Diseños y Esquemáticos 💡](#-diseños-y-esquemáticos-)
 - **6.0** [📲 Instrucciones de Uso 📲](#-instrucciones-de-uso-)
-- **7.0** [📷 Galería del Proyecto 📷](#-galería-del-proyecto-)
-- **8.0** [📂 Estructura del Repositorio 📂](#-estructura-del-repositorio-)
+- **7.0** [📊 Escaneos 📊](#-escaneos-)
+- **8.0** [📷 Galería del Proyecto 📷](#-galería-del-proyecto-)
+- **9.0** [📂 Estructura del Repositorio 📂](#-estructura-del-repositorio-)
 
 <h1 align="center">🔗 Introducción 🔗</h1>
 
@@ -126,6 +127,24 @@ Descripción del segundo paso, calibración de sensores o cámara (rellenar aqu�
 ### Paso 3: Ejecución
 Cualquier otro paso relevante que se deba seguir para iniciar el escaneo.
 
+<h1 align="center">📊 Escaneos 📊</h1>
+
+En esta sección se presentan los resultados obtenidos tras el proceso de digitalización. Las siguientes imágenes muestran la nube de puntos generada y las comparaciones dimensionales realizadas por el software.
+
+<p align="center">
+  <img src="URL_DE_TU_IMAGEN_1" alt="Escaneo 1" width="30%"/>
+  <img src="URL_DE_TU_IMAGEN_2" alt="Escaneo 2" width="30%"/>
+  <img src="URL_DE_TU_IMAGEN_3" alt="Escaneo 3" width="30%"/>
+</p>
+<p align="center">
+  <img src="URL_DE_TU_IMAGEN_4" alt="Escaneo 4" width="30%"/>
+  <img src="URL_DE_TU_IMAGEN_5" alt="Escaneo 5" width="30%"/>
+  <img src="URL_DE_TU_IMAGEN_6" alt="Escaneo 6" width="30%"/>
+</p>
+<p align="center">
+  <em>Resultados visuales del proceso de escaneo y análisis</em>
+</p>
+
 <h1 align="center">📷 Galería del Proyecto 📷</h1>
 
 Imágenes detalladas del prototipo y sus componentes en funcionamiento.
@@ -155,7 +174,7 @@ A continuación se detallan las carpetas que estructuran este repositorio:
 
 ---
 <p align="center">
-  <em>Proyecto realizado por Audisio Juan Pablo, Garrahan Alan y Reyna Valentín Julián.</em>
+  <em>Proyecto realizado por Audisio Juan Pablo, Garrahan Alan y Reyna Valentin.</em>
   <br>
   <em>Facultad de Ingeniería - Universidad Nacional de Lomas de Zamora.</em>
 </p>
