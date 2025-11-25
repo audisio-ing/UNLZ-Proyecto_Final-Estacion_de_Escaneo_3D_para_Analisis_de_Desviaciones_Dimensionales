@@ -132,14 +132,14 @@ Cualquier otro paso relevante que se deba seguir para iniciar el escaneo.
 En esta sección se presentan los resultados obtenidos tras el proceso de digitalización. Las siguientes imágenes muestran la nube de puntos generada y las comparaciones dimensionales realizadas por el software.
 
 <p align="center">
-  <img src="URL_DE_TU_IMAGEN_1" alt="Escaneo 1" width="30%"/>
-  <img src="URL_DE_TU_IMAGEN_2" alt="Escaneo 2" width="30%"/>
-  <img src="URL_DE_TU_IMAGEN_3" alt="Escaneo 3" width="30%"/>
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/Escaneos/A.gif" alt="Escaneo A" width="30%"/>
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/Escaneos/B.gif" alt="Escaneo B" width="30%"/>
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/Escaneos/B.gif" alt="Escaneo C" width="30%"/>
 </p>
 <p align="center">
-  <img src="URL_DE_TU_IMAGEN_4" alt="Escaneo 4" width="30%"/>
-  <img src="URL_DE_TU_IMAGEN_5" alt="Escaneo 5" width="30%"/>
-  <img src="URL_DE_TU_IMAGEN_6" alt="Escaneo 6" width="30%"/>
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/Escaneos/Patron%20A.gif" alt="Patrón A" width="30%"/>
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/Escaneos/Patron%20B.gif" alt="Patrón B" width="30%"/>
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/Escaneos/Patron%20C.gif" alt="Patrón C" width="30%"/>
 </p>
 <p align="center">
   <em>Resultados visuales del proceso de escaneo y análisis</em>
