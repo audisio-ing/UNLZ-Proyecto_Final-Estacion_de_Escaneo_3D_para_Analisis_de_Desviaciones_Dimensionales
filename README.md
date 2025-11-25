@@ -13,20 +13,20 @@
 <p>👤 <a href="https://github.com/ValentinReyna">Valentín Julián Reyna</a></p>
 
 # Index
-- **1.0** [🔗 Introducción 🔗](#-introducción-)
-- **2.0** [📲 Descripción del Sistema 📲](#-descripción-del-sistema-)
-- **3.0** [💻 Tecnologías y Recursos 💻](#-tecnologías-y-recursos-)
-    - **3.1** [Software y Programación](#software-y-programación-)
+- **1.0** [Introducción](#introducción)
+- **2.0** [Descripción del Sistema](#descripción-del-sistema)
+- **3.0** [Tecnologías y Recursos](#tecnologías-y-recursos)
+    - **3.1** [Software y Programación](#software-y-programación)
     - **3.2** [Librerias de Python](#librerias-de-python)
-    - **3.3** [Hardware y Electrónica](#hardware-y-electrónica-)
-- **4.0** [🔩 Listado de Componentes 🔩](#-listado-de-componentes-)
-- **5.0** [💡 Diseños y Esquemáticos 💡](#-diseños-y-esquemáticos-)
-- **6.0** [📲 Instrucciones de Uso 📲](#-instrucciones-de-uso-)
-- **7.0** [📊 Escaneos 📊](#-escaneos-)
-- **8.0** [📷 Galería del Proyecto 📷](#-galería-del-proyecto-)
-- **9.0** [📂 Estructura del Repositorio 📂](#-estructura-del-repositorio-)
+    - **3.3** [Hardware y Electrónica](#hardware-y-electrónica)
+- **4.0** [Listado de Componentes](#listado-de-componentes)
+- **5.0** [Diseños y Esquemáticos](#diseños-y-esquemáticos)
+- **6.0** [Instrucciones de Uso](#instrucciones-de-uso)
+- **7.0** [Escaneos](#escaneos)
+- **8.0** [Galería del Proyecto](#galería-del-proyecto)
+- **9.0** [Estructura del Repositorio](#estructura-del-repositorio)
 
-<h1 align="center">🔗 Introducción 🔗</h1>
+<h1 align="center">Introducción</h1>
 
 Este repositorio corresponde al Proyecto Final de la carrera de Ingeniería Mecatrónica, desarrollado a lo largo del 2025 en la Universidad Nacional de Lomas de Zamora, Facultad de Ingeniería.
 
@@ -38,7 +38,7 @@ El objetivo principal es buscar una solución innovadora para el control de cali
   <em>Vista general de la estación de escaneo</em>
 </p>
 
-<h1 align="center">📲 Descripción del Sistema 📲</h1>
+<h1 align="center">Descripción del Sistema</h1>
 
 Este proyecto consiste en una línea de control integral. Está equipada con un scanner 3D que funciona bajo el principio de triangulación láser. Su fin es la detección de fallas en procesos productivos con matrices destinadas a producciones en serie. Todo el sistema está unido a través de una cinta transportadora y un software de control central.
 
@@ -50,11 +50,11 @@ Este proyecto consiste en una línea de control integral. Está equipada con un 
 4.  **Procesamiento:** Se obtiene una nube de puntos representativa de las dimensiones del objeto.
 5.  **Análisis:** Se realizan comparaciones con el modelo patrón para determinar fallas o deformaciones.
 
-<h1 align="center">💻 Tecnologías y Recursos 💻</h1>
+<h1 align="center">Tecnologías y Recursos</h1>
 
 A continuación se detalla en listas las diferentes tecnologías y recursos utilizados para llevar a cabo el proyecto.
 
-## Software y Programación ♕
+## Software y Programación
 
 | Tecnología | Descripción |
 | :--- | :--- |
@@ -70,7 +70,7 @@ A continuación se detalla en listas las diferentes tecnologías y recursos util
 | :--- | :--- |
 | **OpenCV** | Manejo de Cámara, captura de frames y detección del Láser |
 
-## Hardware y Electrónica ⚡
+## Hardware y Electrónica
 
 | Componente | Uso en el proyecto |
 | :--- | :--- |
@@ -82,7 +82,7 @@ A continuación se detalla en listas las diferentes tecnologías y recursos util
 | **Sensor TOF** | Sensor de tiempo de vuelo para realizar el centrado de la pieza sobre la cinta. |
 | **Sensor de efecto Hall** | Utilizado para realizar el homing del escáner. |
 
-<h1 align="center">🔩 Listado de Componentes 🔩</h1>
+<h1 align="center">Listado de Componentes</h1>
 
 A continuación se detalla el BOM (Bill of Materials) del proyecto:
 
@@ -103,7 +103,7 @@ A continuación se detalla el BOM (Bill of Materials) del proyecto:
 | 1 | VARILLA ROSCADA 8x1.25 | TRANSPORTE Y ESCANEO |
 | - | VARIOS (Tornillos, Tuercas, Maderas) | ESTRUCTURA Y ENSAMBLAJE |
 
-<h1 align="center">💡 Diseños y Esquemáticos 💡</h1>
+<h1 align="center">Diseños y Esquemáticos</h1>
 
 Se presentan los esquemáticos y diagramas de diseño que explican el ensamblaje y la operación de los sistemas.
 
@@ -125,20 +125,21 @@ Se presentan los esquemáticos y diagramas de diseño que explican el ensamblaje
   <em>Detalle de mecanismos</em>
 </p>
 
-<h1 align="center">📲 Instrucciones de Uso 📲</h1>
+<h1 align="center">Instrucciones de Uso</h1>
 
-Para poner en marcha el sistema, siga los siguientes pasos detallados:
+Para utilizar el prototipo, es necesario ejecutar el software dedicado, este guiará al usuario a traves del proceso, dando información relevante del estado actual y posibles errores.
+El mismo se divide en 3 etapas principales:
 
-### Paso 1: Inicialización
+### Estapa 1: Setup
 Descripción del primer paso para poner en marcha el proyecto (rellenar aquí).
 
-### Paso 2: Calibración
+### Etapa 2: Escaneo
 Descripción del segundo paso, calibración de sensores o cámara (rellenar aquí).
 
-### Paso 3: Ejecución
+### Etapa 3: Comparación
 Cualquier otro paso relevante que se deba seguir para iniciar el escaneo.
 
-<h1 align="center">📊 Escaneos 📊</h1>
+<h1 align="center">Escaneos</h1>
 
 En esta sección se presentan los resultados obtenidos tras el proceso de digitalización. Las siguientes imágenes muestran la nube de puntos generada y las comparaciones dimensionales realizadas por el software.
 
@@ -156,7 +157,7 @@ En esta sección se presentan los resultados obtenidos tras el proceso de digita
   <em>Resultados visuales del proceso de escaneo y análisis</em>
 </p>
 
-<h1 align="center">📷 Galería del Proyecto 📷</h1>
+<h1 align="center">Galería del Proyecto</h1>
 
 Imágenes detalladas del prototipo y sus componentes en funcionamiento.
 
@@ -173,7 +174,7 @@ Imágenes detalladas del prototipo y sus componentes en funcionamiento.
   <img src="https://github.com/user-attachments/assets/f61ff91f-1e12-4905-afd6-db76f77e392e" width="45%"/>
 </p>
 
-<h1 align="center">📂 Estructura del Repositorio 📂</h1>
+<h1 align="center">Estructura del Repositorio</h1>
 
 A continuación se detallan las carpetas que estructuran este repositorio:
 
@@ -185,7 +186,9 @@ A continuación se detallan las carpetas que estructuran este repositorio:
 
 ---
 <p align="center">
-  <em>Proyecto realizado por Audisio Juan Pablo, Garrahan Alan y Reyna Valentin.</em>
+  <em><b>Proyecto realizado por Audisio Juan Pablo, Garrahan Alan y Reyna Valentin.</b>b></em>
+  <br>
+  <em>Ingeniería Mecatrónica</em>
   <br>
   <em>Facultad de Ingeniería - Universidad Nacional de Lomas de Zamora.</em>
 </p>
