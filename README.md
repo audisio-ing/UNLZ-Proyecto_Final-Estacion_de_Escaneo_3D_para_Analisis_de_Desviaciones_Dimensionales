@@ -17,7 +17,8 @@
 - **2.0** [📲 Descripción del Sistema 📲](#-descripción-del-sistema-)
 - **3.0** [💻 Tecnologías y Recursos 💻](#-tecnologías-y-recursos-)
     - **3.1** [Software y Programación](#software-y-programación-)
-    - **3.2** [Hardware y Electrónica](#hardware-y-electrónica-)
+    - **3.2** [Librerias de Python](#librerias-de-python)
+    - **3.3** [Hardware y Electrónica](#hardware-y-electrónica-)
 - **4.0** [🔩 Listado de Componentes 🔩](#-listado-de-componentes-)
 - **5.0** [💡 Diseños y Esquemáticos 💡](#-diseños-y-esquemáticos-)
 - **6.0** [📲 Instrucciones de Uso 📲](#-instrucciones-de-uso-)
@@ -51,25 +52,35 @@ Este proyecto consiste en una línea de control integral. Está equipada con un 
 
 <h1 align="center">💻 Tecnologías y Recursos 💻</h1>
 
+A continuación se detalla en listas las diferentes tecnologías y recursos utilizados para llevar a cabo el proyecto.
+
 ## Software y Programación ♕
 
 | Tecnología | Descripción |
 | :--- | :--- |
-| **Python** | Lenguaje principal para el procesamiento de datos, lógica de control y visión computacional. |
-| **Arduino IDE** | Utilizado para programar el microcontrolador que maneja los motores y sensores físicos. |
-| **ROS** | (Robot Operating System) Implementado para la gestión de nodos y comunicación del robot. |
-| **OpenCV** | Librería de visión artificial utilizada para el procesamiento de las capturas del láser. |
-| **TensorFlow / AI** | Redes neuronales y algoritmos de machine learning para el análisis de patrones. |
+| **Python** | Lenguaje principal utilizado para visión computacional, procesamiento y visualización de datos. |
+| **Arduino IDE** | Utilizado para la programación del microcontrolador que maneja los motores y sensores físicos. |
+| **Autodesk Fusion 360** | Diseño de componentes mecánicos y piezas a escanear. |
+| **OBS Studio** | Utilizado como intermediario, permite ajustar controles de la cámara no posibles en python. |
+| **CL-Eye Test** | Software utilizado para la conexión con la Cámara y drivers específicos. |
+
+## Librerias de Python
+
+| Librería | Descripción |
+| :--- | :--- |
+| **OpenCV** | Manejo de Cámara, captura de frames y detección del Láser |
 
 ## Hardware y Electrónica ⚡
 
 | Componente | Uso en el proyecto |
 | :--- | :--- |
 | **Arduino Uno** | Cerebro del control físico (motores y sensores). |
-| **Nema 17** | Motores paso a paso para el movimiento de la cinta y el escáner. |
+| **Cámara PS3 Eye** | Cámara utilizada para el escaneo y triangulación. |
+| **Motor Stepper Nema 17** | Motores paso a paso para el movimiento de la cinta y el escáner. |
 | **Driver A4988** | Controladores para el manejo preciso de los motores paso a paso. |
 | **Láser de Barra** | Fuente de luz para realizar la triangulación sobre la pieza. |
-| **Sensor TOF** | Sensor de tiempo de vuelo para detectar la presencia y distancia de las piezas. |
+| **Sensor TOF** | Sensor de tiempo de vuelo para realizar el centrado de la pieza sobre la cinta. |
+| **Sensor de efecto Hall** | Utilizado para realizar el homing del escáner. |
 
 <h1 align="center">🔩 Listado de Componentes 🔩</h1>
 
