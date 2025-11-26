@@ -4,7 +4,7 @@
 <p align="center">
   <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/Animaciones/Paneo.gif" alt="Demostración" width="300"/>
   <br>
-  <em>Vista general</em>
+  <em>Render del prototipo</em>
 </p>
 
 # Integrantes
@@ -21,7 +21,7 @@
     - **3.3** [Hardware y Electrónica](#hardware-y-electrónica)
 - **4.0** [Listado de Componentes](#listado-de-componentes)
 - **5.0** [Diseños y Esquemáticos](#diseños-y-esquemáticos)
-- **6.0** [Instrucciones de Uso](#instrucciones-de-uso)
+- **6.0** [Interfaz de Usuario y Funcionamiento](#interfaz-de-usuario-y-funcionamiento)
 - **7.0** [Escaneos](#escaneos)
 - **8.0** [Galería del Proyecto](#galería-del-proyecto)
 - **9.0** [Estructura del Repositorio](#estructura-del-repositorio)
@@ -134,20 +134,72 @@ Se presentan los esquemáticos y planos de vista explosionada de los diferentes 
   <em>Vista explosionada del mecanismo de la Cinta Transportadora</em>
 </p>
 
-<h1 align="center">Instrucciones de Uso</h1>
+<h1 align="center">Interfaz de Usuario y Funcionamiento</h1>
 
-Para utilizar el prototipo, es necesario ejecutar el software dedicado, este guiará al usuario a traves del proceso, dando información relevante del estado actual y posibles errores.
-El mismo se divide en 3 etapas principales:
+Para utilizar el prototipo es necesario ejecutar el software dedicado, este guiará al usuario a traves del proceso mediante una interfaz de usuario, dando información relevante del estado actual y posibles errores.
+La misma se divide en 3 etapas principales:
 
-### Estapa 1: Setup
-Descripción del primer paso para poner en marcha el proyecto (rellenar aquí).
+<p align="center">
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Menu.png" alt="Menu GUI" width="800"/>
+  <br>
+  <em>Menu Inicial de la GUI</em>
+</p>
 
-### Etapa 2: Escaneo
-Descripción del segundo paso, calibración de sensores o cámara (rellenar aquí).
+### Etapas:
 
-### Etapa 3: Comparación
-Cualquier otro paso relevante que se deba seguir para iniciar el escaneo.
+1. **Setup Cámara**
+Previo a realizar un escaneo es necesario ejecutar el Setup de la cámara, este nos permitirá seleccionar el índice de cámara dentro de la PC, el valor de treshold para la detección del láser y el puerto <b>COM</b> del Arduino
 
+<p align="center">
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Setup%20Cámara.png" alt="GUI Setup Cámara" width="500"/>
+  <br>
+  <em>GUI Setup Cámara</em>
+</p>
+
+2. **Escaneo**
+Una vez configurado los parámetros iniciales se procede a la segunda etapa, el escaneo. Se abrirá una ventana nueva con 2 opciones: <b>"Comenzar escaneo"</b> y un engranaje que nos llevará a la configuración, permitiendonos seleccionar el número de muestras a tomar (50 por defecto).
+
+
+<p align="center">
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Escaneo.png" alt="GUI Escaneo" width="45%"/>
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Configuración%20Escaneo.png" alt="GUI Configuración Escaneo" width="45%"/>
+  <br>
+  <em>GUI Escaneo y Configuración de muestras</em>
+</p>
+
+Al presionar el botón <b>"Comenzar escaneo"</b> Python informará a Arduino el inicio de la secuencia, durante el proceso de escaneo el usuario observará una barra de estado indicando la etapa actual del escaneo junto con una transmisión en vivo de la cámara.
+
+<p align="center">
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Setup%20Cámara.png" alt="GUI Previa al escaneo" width="500"/>
+  <br>
+  <em>GUI Previa al escaneo</em>
+</p>
+
+Cuando la pieza se encuentre en posición y comience el escaneo, aparecerá una barra de carga que indicará la muestra actual, muestras restantes y un tiempo estimado de finalización.
+
+<p align="center">
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Setup%20Cámara.png" alt="GUI Durante el escaneo" width="500"/>
+  <br>
+  <em>GUI Durante el escaneo</em>
+</p>
+
+Una vez finalizado el escaneo y habiendo expulsado la pieza, la interfaz cambiará haciendo saber al usuario que el escaneo ha finalizado y mostrando una ventana que le permitirá visualizar la nube de puntos obtenida.
+
+<p align="center">
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Escaneo.png" alt="GUI Escaneo Finalizado" width="45%"/>
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Configuración%20Escaneo.png" alt="GUI Nube de puntos obtenida" width="45%"/>
+  <br>
+  <em>GUI Escaneo finalizado y nube de puntos obtenida</em>
+</p>
+
+3. **Comparación**
+Previo a realizar un escaneo es necesario ejecutar el Setup de la cámara, este nos permitirá seleccionar el índice de cámara dentro de la PC, el valor de treshold para la detección del láser y el puerto <b>COM</b> del Arduino
+
+<p align="center">
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Setup%20Cámara.png" alt="GUI Escaneo" width="500"/>
+  <br>
+  <em>Menu de Escaneo</em>
+</p>
 <h1 align="center">Ensayos Realizados</h1>
 
 A la hora de realizar el proyecto, nos encontramos con varias problematicas, las cuales pasaremos a desarrollar a continuacion, incluyendo la manera que encontramos para solucionarlos.
