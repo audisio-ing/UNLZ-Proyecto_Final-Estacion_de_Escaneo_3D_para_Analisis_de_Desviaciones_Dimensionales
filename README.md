@@ -56,6 +56,52 @@ Este proyecto consiste en una línea de control integral. Está equipada con un 
 4.  **Procesamiento:** Se obtiene una nube de puntos representativa de las dimensiones del objeto.
 5.  **Análisis:** Se realizan comparaciones con el modelo patrón para determinar fallas o deformaciones.
 
+
+<h1 align="center">Marco teórico</h1>
+
+### Sensor Time Of Flight
+La tecnología Time-of-Flight (ToF) o "Tiempo de Vuelo" es un método de medición de distancia basado en la velocidad de la luz. Un sensor ToF mide el tiempo absoluto de tránsito de un pulso de luz desde que es emitido hasta que regresa al detector.
+
+El funcionamiento se desglosa en las siguientes etapas:
+
+  **Emisión:** El sensor emite pulsos de luz infrarroja , invisible al ojo humano.
+
+  **Reflexión:** La luz impacta sobre la superficie del objeto objetivo y se refleja.
+
+  **Detección:** Sensor receptor sensa el instante exacto de llegada de la luz reflejada. 
+
+El Emisor de luz infrarroja cuenta con una apertura de 25°, lo que significa que el haz se abre conicamente. Esto permite tener una zona de sensado, en la que se detecta paso a paso la posicion de la pieza y permite un centrado preciso de la cinta.
+
+### Sensor Efecto Hall
+El sensor de efecto Hall es un dispositivo electrónico de estado sólido utilizado para la detección de campos magnéticos. Se utiliza para realizar la secuencia de "Homing" del mecanismo de escaneo. 
+A diferencia de los interruptores mecánicos tradicionales que requieren contacto físico, el sensor Hall funciona detectando la presencia de un imán permanente montado en un extremo del mecanismo.
+
+El proceso ocurre en tres pasos:
+
+  **Reposo:** Cuando el imán está lejos, el sensor mantiene su salida en un estado lógico inactivo (por ejemplo, HIGH o 5V).
+
+  **Aproximación**: A medida que el mecanismo mueve el imán hacia el sensor, el campo magnético atraviesa el elemento sensible interno del sensor.
+
+  **Conmutación:** Cuando la intensidad del campo magnético supera un umbral, el sensor cambia instantáneamente su salida al estado activo (LOW o 0V).
+
+Estos cambios de estado nos permiten conocer el lugar en el espacio en el que se encuentra el mecanismo
+
+
+### Motores Paso a Paso
+
+El motor paso a paso es un convertidor electromecánico digital-analógico que transforma impulsos eléctricos discretos en movimientos mecánicos angulares precisos. A diferencia de los motores de corriente continua convencionales que giran libremente al aplicarles voltaje, el motor paso a paso rota en incrementos angulares fijos conocidos como "pasos".
+
+Dado que las salidas lógicas del microcontrolador carecen de la capacidad de corriente necesaria para excitar las bobinas del motor, se requiere una etapa de potencia intermedia. Para este proyecto se seleccionó el controlador A4988.
+
+Este controlador cumple dos funciones criticas. Por un lado nos permite regular la corriente que fluye hacia las bobinas del motor mediante un potenciometro, permitiendo ajustar el valor apropiado para que el motor no se salte pasos y pierda referencia. Y por otro lado este controlador nos permite realizar Microstepping, para posicionar el rotor en ubicaciones intermedias entre los polos magnéticos y permitirnos tener una resolucion angular de 0.1125° por paso. No solo nos da una presicion mucho mayor, sino que reduce el ruido de funcionamiento.
+
+## Escaneo 3D
+
+### Triangulacion laser
+
+### Nube de puntos
+
+
 <h1 align="center">Tecnologías y Recursos</h1>
 
 A continuación se detalla en listas las diferentes tecnologías y recursos utilizados para llevar a cabo el proyecto.
@@ -278,7 +324,7 @@ A continuación se detallan las carpetas que estructuran este repositorio:
 
 ---
 <p align="center">
-  <em><b>Proyecto realizado por Audisio Juan Pablo, Garrahan Alan y Reyna Valentin.</b>b></em>
+  <em><b>Proyecto realizado por Audisio Juan Pablo, Garrahan Alan y Reyna Valentin.</b></em>
   <br>
   <em>Ingeniería Mecatrónica</em>
   <br>
