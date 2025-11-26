@@ -285,15 +285,57 @@ Para lograr una comparación
 
 A la hora de realizar el proyecto, nos encontramos con varias problematicas, las cuales pasaremos a desarrollar a continuacion, incluyendo la manera que encontramos para solucionarlos.
 
-En primer lugar: la cinta transoprtadora o, mejor dicho, el centrado de la pieza. Tuvimos varios problemas, primero, de qué material hacer la cinta. Empezamos utilizando un film, pero nos encontramos con el problema de que la pieza patinaba y al sensor funcionar contando al cantida de pasos que daba el motor para centrar la pieza, no la dejaba en el lugar correcto. Debido a esto, decidimos ponerle un material con mucha fricción a la base de las piezas. Esto no quitó del todo el problema, por lo cual tambien le sumamos el utilziar el motor en 1/16 de paso, para que el movimiento fuera más continuo, sin perder velocidad, dado que veniamos queriendo que la cinta avnzara una gran cantidad de pasos para que no tomara mucho tiempo.
-Una vez resuelto este tema, la cinta seguia sin quedar del todo centrada, por lo cual pasamos a analizar qué le pasaba a la cinta mientras avanza, con lo cual pduimos detectar que se iba hacia un lado, moviendo a su paso a la pieza. Esto nos llevó a acomodar los clindros qeu sostienen la cinta para que aueden lo más paralelas posibles, para que asi avance derecha la cinta. Esto solo se logro con prueba y error, debido a la precariedad del la construcción de la cinta, dada la limitada accesibilidad a mejores herramientas y materiales. A su vez, se cambió el material de la cinta por ule y se cortó de manera que quedara lo más regular posible. Finalmente, para asegurar por completo el centrado de la pieza, se diseñ´un centrador que ca montado sobre los porta rdamientos, el cual s u vez esta hecho de maenra que indica en que setndo debe ir la pieza.
+**Cinta Transportadora**
 
+  + La cinta patinaba, para lo cual:
+    - Se le agregó un pedazo de tela a la base de las piezas.
+    - Se utilizó el motor en 1/16 de paso para que el movimiento fuera más fluido, junto con una aceleración y desaceleración.
+    
+  + El sensor TOF no dejaba en el centro de la cinta a la pieza, debido a que funcionaba leyendo la cantidad de pasos que daba el motor:
+    - Se modificó la secuencia, junto con el dieciseisavo de paso, para que fucionara más lentamente cuando la pieza fuera sensada y más rapido el resto del tiempo.
+   
+  + La pieza se corria transversalmente debido a que la cinta se iba hacia un lado:
+    - Se alinearon los cilindros para que quedaran paralelos y la cinta corriera de manera centrada.
 
+  + La cinta como conjunto quedó descentrada longitudinalmente debido a la falta de rigiez del fibrafacil:
+    - Se consiguió a prueba y error, encontrar la cantidad de pasos extra que debía volver la pieza para quedar centrada.
+  
+  + No había manera de poner la pieza centrada a mano:
+    - Se diseñó un centrado que apoya en los portarodamientos, el cual indica el sentido de la pieza.
 
+**Caja de Escaneo**
+
+  + El cable de la cámara tiraba y generaba que el motor se salteara pasos:
+    - Se diseño una guía interna y externa.
+
+**Cámara**
+ 
+  + Era dificil alinear la cámara, la cual afectaba al escaneo:
+    - Se diseño una guía tanto para la cámara como para el laser, de manera que se movieran conjuntamente.
+
+**Escaneo**
+
+  + Debido a la distorsión de la cámara, el escaneo no era representativo de la pieza:
+    - Se creó un archivo de escalamiento, con el cual, a traves de prueba y error, se encontraron los parametros para corregir la distorsión. 
 
 <h1 align="center">Futuras Mejoras y Propuestas</h1>
 
-cinta: , sin embargo, si la estructura de la cinta hubiera sido m{as rigida y hubeiramos podido asegrar una mejor paralelidad entre los cilindros, esot no hubeira sido un problema.
+**Cinta Transportadora**
+
+  + Utilizar una cinta transportadora pre-armada, ya que requiere de un nivel de precisión extremadamente dificil de conseguir con una construcción manual.
+  + Trabajar con sensores en los motores para el centrado de la pieza; o con un tipo distinto de sensor al del TOF.
+
+**Caja de Escaneo**
+
+  + Utilizar una caja de escaneo de un material más resitente, tanto para darle más rigidez y que soporte mejor los componentes, como para que la unión de la cinta con la caja sea mejor y quede mejor centrada.
+
+**Cámara**
+  + Utilizar un giroscopio para evitar cualquier movimiento en Z de la cámara, el cual afectaría a la calibración.
+
+**Escaneo**
+  
+  + Utilizar una cámara y sensor de mejor calidad, para una mayor precisión y resolución.
+  + Trabajar con otro sistema de calibración que sea más preciso y genérico.
 
 <h1 align="center">Galería del Proyecto</h1>
 
