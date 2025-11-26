@@ -315,7 +315,7 @@ A la hora de realizar el proyecto, nos encontramos con varias problematicas, las
 
 **Escaneo**
 
-  + Debido a la distorsión de la cámara, el escaneo no era representativo de la pieza:
+  + El escaneo no era representativo de la pieza:
     - Se creó un archivo de escalamiento, con el cual, a traves de prueba y error, se encontraron los parametros para corregir la distorsión. 
 
 <h1 align="center">Futuras Mejoras y Propuestas</h1>
