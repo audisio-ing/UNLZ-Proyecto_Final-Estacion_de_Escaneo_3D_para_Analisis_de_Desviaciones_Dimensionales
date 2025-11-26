@@ -15,22 +15,30 @@
 # Indice
 - **1.0** [Introducción](#introducción)
 - **2.0** [Descripción del Sistema](#descripción-del-sistema)
-- **3.0** [Tecnologías y Recursos](#tecnologías-y-recursos)
-    - **3.1** [Software y Programación](#software-y-programación)
-    - **3.2** [Librerias de Python](#librerias-de-python)
-    - **3.3** [Hardware y Electrónica](#hardware-y-electrónica)
-- **4.0** [Listado de Componentes](#listado-de-componentes)
-- **5.0** [Diseños y Esquemáticos](#diseños-y-esquemáticos)
-- **6.0** [Interfaz de Usuario y Funcionamiento](#interfaz-de-usuario-y-funcionamiento)
-    - **6.1** [Setup Cámara](#setup-cámara)
-    - **6.2** [Escaneo](#escaneo)
-    - **6.3** [Comparación](#comparación)
-- **7.0** [Escaneos Obtenidos](#escaneos-obtenidos)
-- **8.0** [Algoritmo de Comparación](#algoritmo-de-comparación)
-- **9.0** [Errores Cometidos y Lecciones Aprendidas](#errores-cometidos-y-lecciones-aprendidas)
-- **10.0** [Futuras Mejoras y Propuestas](#futuras-mejoras-y-propuestas)
-- **11.0** [Galería del Proyecto](#galería-del-proyecto)
-- **12.0** [Estructura del Repositorio](#estructura-del-repositorio)
+- **3.0** [Marco Teórico](#marco-teórico)
+  - **3.1**[Sensor ToF](#sensor-time-of-flight)
+  - **3.2**[Sensor Efeto Hall](#sensor-efecto-hall)
+  - **3.3**[Motor Paso a Paso](#motores-paso-a-paso)
+  - **3.4**[Sensor ToF](#sensor-time-of-flight)
+- **4.0** [Escaneo 3D](#escaneo-3d)
+   - **4.1** [Triangulación Laser](#triangulación-laser)
+   - **4.1** [Nube de Puntos](#nube-de-puntos)
+- **5.0** [Tecnologías y Recursos](#tecnologías-y-recursos)
+    - **5.1** [Software y Programación](#software-y-programación)
+    - **5.2** [Librerias de Python](#librerias-de-python)
+    - **5.3** [Hardware y Electrónica](#hardware-y-electrónica)
+- **6.0** [Listado de Componentes](#listado-de-componentes)
+- **7.0** [Diseños y Esquemáticos](#diseños-y-esquemáticos)
+- **8.0** [Interfaz de Usuario y Funcionamiento](#interfaz-de-usuario-y-funcionamiento)
+    - **8.1** [Setup Cámara](#setup-cámara)
+    - **8.2** [Escaneo](#escaneo)
+    - **8.3** [Comparación](#comparación)
+- **9.0** [Escaneos Obtenidos](#escaneos-obtenidos)
+- **10.0** [Algoritmo de Comparación](#algoritmo-de-comparación)
+- **11.0** [Errores Cometidos y Lecciones Aprendidas](#errores-cometidos-y-lecciones-aprendidas)
+- **12.0** [Futuras Mejoras y Propuestas](#futuras-mejoras-y-propuestas)
+- **13.0** [Galería del Proyecto](#galería-del-proyecto)
+- **14.0** [Estructura del Repositorio](#estructura-del-repositorio)
 
 <h1 align="center">Introducción</h1>
 
@@ -102,7 +110,7 @@ El escaneo 3D es el proceso de analizar un objeto del mundo real para recolectar
 
 **Métodos Activos:** Superan este problema emitiendo su propia fuente de iluminación controlada. Nuestro proyecto se enmarca en esta categoría. Al proyectar un patrón de luz conocido (en este caso, una línea láser) y observar su interacción con el objeto, se puede determinar la geometría de la superficie de manera robusta.
 
-### Triangulacion laser
+### Triangulación laser
 La triangulación láser es el principio fundamental de la estación de escaneo. Se basa en una configuración geométrica precisa que involucra un conjunto cámara-proyector láser y un motor que los hace girar sobre un eje. En este sistema, el proyector no emite un simple punto, sino una "hendidura" o plano de luz.
 
 El concepto de funcionamiento es el siguiente:
