@@ -193,13 +193,20 @@ Una vez finalizado el escaneo y habiendo expulsado la pieza, la interfaz cambiar
 </p>
 
 3. **Comparación**
-Previo a realizar un escaneo es necesario ejecutar el Setup de la cámara, este nos permitirá seleccionar el índice de cámara dentro de la PC, el valor de treshold para la detección del láser y el puerto <b>COM</b> del Arduino
+   
+Ahora que ya obtuvimos una nube de puntos a escala de la pieza, procedemos a la tercera etapa, ejecutar el programa de comparación. Al iniciar nos encontraremos con una interfaz muy similar al programa de escaneo, un botón de Comparación y un icono de engranaje para realizar configuraciones.
 
 <p align="center">
-  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Setup%20Cámara.png" alt="GUI Escaneo" width="500"/>
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Comparación.png" alt="GUI Comparación" width="45%"/>
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Configuración%20Comparación.png" alt="GUI Configuración Comparación" width="45%"/>
   <br>
-  <em>Menu de Escaneo</em>
+  <em>GUI Comparación y configuración</em>
 </p>
+
+Previo a realizar la comparación es necesario dirigirse a la pestaña de ajustes, donde el usuario deberá seleccionar la ruta de destino de los 3 escaneos que usará como patrones en la comparación, y tambien ingresar un porcentaje de similitud mínimo que indicará si la pieza es aceptada o rechazada.
+
+Ahora sí procedemos con la comparación, 
+
 <h1 align="center">Ensayos Realizados</h1>
 
 A la hora de realizar el proyecto, nos encontramos con varias problematicas, las cuales pasaremos a desarrollar a continuacion, incluyendo la manera que encontramos para solucionarlos.
