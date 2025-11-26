@@ -51,8 +51,8 @@ Este proyecto consiste en una línea de control integral. Está equipada con un 
 ### Funcionamiento del Proceso
 
 1.  **Ingreso:** Las piezas ingresan al sistema a través de la cinta transportadora.
-2.  **Detección:** Un sensor TOF detecta la pieza y detiene la marcha en la posición correcta.
-3.  **Escaneo:** Una vez en posición, comienza el proceso de escaneo láser.
+2.  **Detección:** Un sensor TOF detecta la pieza y la centra en el escáner.
+3.  **Escaneo:** Una vez en posición, comienza el proceso de escaneo.
 4.  **Procesamiento:** Se obtiene una nube de puntos representativa de las dimensiones del objeto.
 5.  **Análisis:** Se realizan comparaciones con el modelo patrón para determinar fallas o deformaciones.
 
