@@ -96,10 +96,40 @@ Dado que las salidas lógicas del microcontrolador carecen de la capacidad de co
 Este controlador cumple dos funciones criticas. Por un lado nos permite regular la corriente que fluye hacia las bobinas del motor mediante un potenciometro, permitiendo ajustar el valor apropiado para que el motor no se salte pasos y pierda referencia. Y por otro lado este controlador nos permite realizar Microstepping, para posicionar el rotor en ubicaciones intermedias entre los polos magnéticos y permitirnos tener una resolucion angular de 0.1125° por paso. No solo nos da una presicion mucho mayor, sino que reduce el ruido de funcionamiento.
 
 ## Escaneo 3D
+El escaneo 3D es el proceso de analizar un objeto del mundo real para recolectar datos sobre su forma y construir modelos digitales tridimensionales. Los métodos de escaneo se dividen generalmente en dos categorías: pasivos y activos.
+
+**Métodos Pasivos:** Utilizan la luz ambiental existente para capturar la forma, como la estereoscopía (usar dos cámaras) o la "forma a partir de silueta". Estos métodos suelen enfrentar dificultades con superficies de textura uniforme, ya que les cuesta encontrar "correspondencias" (identificar el mismo punto en el espacio en múltiples vistas).
+
+**Métodos Activos:** Superan este problema emitiendo su propia fuente de iluminación controlada. Nuestro proyecto se enmarca en esta categoría. Al proyectar un patrón de luz conocido (en este caso, una línea láser) y observar su interacción con el objeto, se puede determinar la geometría de la superficie de manera robusta.
 
 ### Triangulacion laser
+La triangulación láser es el principio fundamental de la estación de escaneo. Se basa en una configuración geométrica precisa que involucra un conjunto cámara-proyector láser y un motor que los hace girar sobre un eje. En este sistema, el proyector no emite un simple punto, sino una "hendidura" o plano de luz.
+
+El concepto de funcionamiento es el siguiente:
+
+**El Plano Láser:** El proyector láser emite una hoja de luz plana. Normalmente la posición y orientación de este plano en el espacio tridimensional en este tipo de escáneres 3D se determina mediante la realización de una calibración. Pero en este caso el sistema se diseñó desde cero, conociendo su posición y no requiriendo de una calibración.
+
+**El Rayo de la Cámara:** La cámara, modelada como un sistema "pinhole" (estenopeico), observa la escena. Cuando el plano láser incide sobre la superficie del objeto, crea una línea de luz visible y la cámara registra este perfil en un conjunto de píxeles específicos en su sensor.Cada píxel que detecta esta línea de luz es definida como un "rayo" (una línea recta en el espacio 3D) que viaja desde el centro de proyección de la cámara, a través del píxel, y hacia el objeto.
+
+**Triangulación (Intersección Rayo-Plano):** Dado que se conoce la geometría del sistema, para cada píxel iluminado por el láser, se tienen dos elementos geométricos definidos: El plano de luz emitido por el láser, y el rayo de visión definido por el píxel en la cámara. La posición 3D exacta del punto en la superficie del objeto se calcula encontrando la intersección única entre este rayo y el plano. Este cálculo geométrico es lo que da nombre a la "triangulación".
+
 
 ### Nube de puntos
+
+El principio de triangulación permite capturar un perfil 2D del objeto. Para construir un modelo 3D completo, se requiere un movimiento relativo entre el escáner y el objeto.
+
+En la configuración de este proyecto, el conjunto de cámara y láser gira 360 grados alrededor de la pieza, mientras la pieza permanece estática. El proceso de adquisición de datos sigue estos pasos:
+
+**Captura de Perfil:** En una posición angular fija, el láser ilumina la pieza y la cámara captura una imagen del perfil de luz.
+
+**Cálculo de Puntos 3D:** Mediante el procesamiento de la imagen para detectar la línea láser y la aplicación del método de triangulación (intersección rayo-plano), se calcula la nube de puntos 3D que componen este perfil.
+
+**Rotación:** El sistema cama-láser gira un ángulo conocido y pequeño.
+
+**Repetición**: Se repiten los pasos 1 y 2 para la nueva posición angular, generando un nuevo perfil de puntos 3D.
+
+**Fusión:** Este proceso se repite para una rotación completa de 360 grados. Dado que se conoce la posición del centro de giro y el ángulo de cada paso, todos los perfiles capturados se pueden transformar a un sistema de coordenadas global común. La "fusión" de todos estos perfiles individuales da como resultado la nube de puntos 3D completa que representa la geometría total del objeto.
+
 
 
 <h1 align="center">Tecnologías y Recursos</h1>
