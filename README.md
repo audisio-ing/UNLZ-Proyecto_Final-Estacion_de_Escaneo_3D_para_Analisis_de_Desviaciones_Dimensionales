@@ -30,6 +30,8 @@
     - **5.3** [Hardware y Electrónica](#hardware-y-electrónica)
 - **6.0** [Listado de Componentes](#listado-de-componentes)
 - **7.0** [Diseños y Esquemáticos](#diseños-y-esquemáticos)
+  - **7.1** [Diseño Mecánico](#diseño-mecánico)
+  - **7.2** [Diseño Electrónico](#diseño-electrónico) 
 - **8.0** [Interfaz de Usuario y Funcionamiento](#interfaz-de-usuario-y-funcionamiento)
     - **8.1** [Setup Cámara](#setup-cámara)
     - **8.2** [Escaneo](#escaneo)
@@ -395,6 +397,7 @@ A continuación se muestran los resultados obtenidos del escaneo de las diferent
   <em>Resultados visuales del proceso de escaneo y análisis</em>
 </p>
 
+<br>
 <h1 align="center">Algoritmo de Comparación</h1>
 
 Para lograr una comparación
