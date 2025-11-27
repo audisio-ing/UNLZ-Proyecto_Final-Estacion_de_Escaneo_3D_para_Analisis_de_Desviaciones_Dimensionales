@@ -15,11 +15,12 @@
 # Indice
 - **1.0** [Introducción](#introducción)
 - **2.0** [Descripción del Sistema](#descripción-del-sistema)
+  - **2.1** [Diagrama de Bloques](#diagrama-de-bloques)
+  - **2.2** [Secuencia de Escaneo](#secuencia-de-escaneo)
 - **3.0** [Marco Teórico](#marco-teórico)
   - **3.1** [Sensor ToF](#sensor-time-of-flight)
   - **3.2** [Sensor Efeto Hall](#sensor-efecto-hall)
-  - **3.3** [Motor Paso a Paso](#motores-paso-a-paso)
-  - **3.4** [Sensor ToF](#sensor-time-of-flight)
+  - **3.3** [Motor Paso a Paso](#motor-paso-a-paso)
 - **4.0** [Escaneo 3D](#escaneo-3d)
    - **4.1** [Triangulación Laser](#triangulación-laser)
    - **4.1** [Nube de Puntos](#nube-de-puntos)
@@ -40,6 +41,7 @@
 - **13.0** [Galería del Proyecto](#galería-del-proyecto)
 - **14.0** [Estructura del Repositorio](#estructura-del-repositorio)
 
+<br>
 <h1 align="center">Introducción</h1>
 
 Este repositorio corresponde al Proyecto Final de la carrera de Ingeniería Mecatrónica, desarrollado a lo largo del 2025 en la Universidad Nacional de Lomas de Zamora, Facultad de Ingeniería.
@@ -52,50 +54,99 @@ El objetivo principal es buscar una solución innovadora para el control de cali
   <em>Vista general de la estación de escaneo</em>
 </p>
 
+<br>
 <h1 align="center">Descripción del Sistema</h1>
 
 Este proyecto consiste en una línea de control integral. Está equipada con un scanner 3D que funciona bajo el principio de triangulación láser. Su fin es la detección de fallas en procesos productivos con matrices destinadas a producciones en serie. Todo el sistema está unido a través de una cinta transportadora y un software de control central.
 
-### Funcionamiento del Proceso
+### Diagrama de Bloques
 
-1.  **Ingreso:** Las piezas ingresan al sistema a través de la cinta transportadora.
-2.  **Detección:** Un sensor TOF detecta la pieza y la centra en el escáner.
-3.  **Escaneo:** Una vez en posición, comienza el proceso de escaneo.
-4.  **Procesamiento:** Se obtiene una nube de puntos representativa de las dimensiones del objeto.
-5.  **Análisis:** Se realizan comparaciones con el modelo patrón para determinar fallas o deformaciones.
+A continuación se presenta un diagrama de bloques que detalla el circuito de funcionamiento del prototipo:
 
+<p align="center">
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/Diagrama%20de%20Bloques.png" alt="Diagrama de Bloques" width="100%"/>
+  <br>
+  <em>Diagrama de Bloques</em>
+</p>
 
+### Secuencia de Escaneo
+
+Procederemos a explicar cada paso del escaneo acompañado de animaciones didácticas:
+
+1. **Homing:** Previo al escaneo, se realiza el Homing para conocer la posición del escáner y así evitar colisiones, para esto se utiliza el Sensor de efecto Hall
+
+<p align="center">
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/Animaciones/Homing.gif" alt="Homing del escáner" width="50%"/>
+  <br>
+  <em>Homing del escáner</em>
+</p>
+
+2.  **Ingreso:** Las piezas ingresan al sistema a través de la cinta transportadora.
+
+<p align="center">
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/Animaciones/Cinta.gif" alt="Ingreso" width="50%"/>
+  <br>
+  <em>La pieza ingresa al sistema</em>
+</p>
+
+3.  **Detección:** Un sensor TOF detecta la pieza y la centra en el escáner.
+
+<p align="center">
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/Animaciones/Centrado.gif" alt="Centrado de la pieza" width="50%"/>
+  <br>
+  <em>Centrado de la pieza</em>
+</p>
+
+4.  **Escaneo:** Una vez en posición, comienza el proceso de escaneo.
+
+<p align="center">
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/Animaciones/Escaneo%20Interior.gif" alt="Escaneo" width="50%"/>
+  <br>
+  <em>Proceso de escaneo</em>
+</p>
+
+5. **Expulsión:** Al finalizar el escaneo, se expulsa la pieza del sistema.
+
+<p align="center">
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/Animaciones/Salida.gif" alt="Expulsión de la pieza" width="50%"/>
+  <br>
+  <em>Se expulsa la pieza</em>
+</p>
+
+7.  **Procesamiento:** Se obtiene una nube de puntos representativa de las dimensiones del objeto.
+8.  **Análisis:** Se realizan comparaciones con el modelo patrón para determinar fallas o deformaciones.
+
+<br>
 <h1 align="center">Marco teórico</h1>
 
-### Sensor Time Of Flight
+## Sensor Time Of Flight
 La tecnología Time-of-Flight (ToF) o "Tiempo de Vuelo" es un método de medición de distancia basado en la velocidad de la luz. Un sensor ToF mide el tiempo absoluto de tránsito de un pulso de luz desde que es emitido hasta que regresa al detector.
 
 El funcionamiento se desglosa en las siguientes etapas:
 
-  **Emisión:** El sensor emite pulsos de luz infrarroja , invisible al ojo humano.
+- **Emisión:** El sensor emite pulsos de luz infrarroja , invisible al ojo humano.
 
-  **Reflexión:** La luz impacta sobre la superficie del objeto objetivo y se refleja.
+- **Reflexión:** La luz impacta sobre la superficie del objeto objetivo y se refleja.
 
-  **Detección:** Sensor receptor sensa el instante exacto de llegada de la luz reflejada. 
+- **Detección:** Sensor receptor sensa el instante exacto de llegada de la luz reflejada. 
 
 El Emisor de luz infrarroja cuenta con una apertura de 25°, lo que significa que el haz se abre conicamente. Esto permite tener una zona de sensado, en la que se detecta paso a paso la posicion de la pieza y permite un centrado preciso de la cinta.
 
-### Sensor Efecto Hall
+## Sensor Efecto Hall
 El sensor de efecto Hall es un dispositivo electrónico de estado sólido utilizado para la detección de campos magnéticos. Se utiliza para realizar la secuencia de "Homing" del mecanismo de escaneo. 
 A diferencia de los interruptores mecánicos tradicionales que requieren contacto físico, el sensor Hall funciona detectando la presencia de un imán permanente montado en un extremo del mecanismo.
 
 El proceso ocurre en tres pasos:
 
-  **Reposo:** Cuando el imán está lejos, el sensor mantiene su salida en un estado lógico inactivo (por ejemplo, HIGH o 5V).
+- **Reposo:** Cuando el imán está lejos, el sensor mantiene su salida en un estado lógico inactivo (por ejemplo, HIGH o 5V).
 
-  **Aproximación**: A medida que el mecanismo mueve el imán hacia el sensor, el campo magnético atraviesa el elemento sensible interno del sensor.
+- **Aproximación**: A medida que el mecanismo mueve el imán hacia el sensor, el campo magnético atraviesa el elemento sensible interno del sensor.
 
-  **Conmutación:** Cuando la intensidad del campo magnético supera un umbral, el sensor cambia instantáneamente su salida al estado activo (LOW o 0V).
+- **Conmutación:** Cuando la intensidad del campo magnético supera un umbral, el sensor cambia instantáneamente su salida al estado activo (LOW o 0V).
 
 Estos cambios de estado nos permiten conocer el lugar en el espacio en el que se encuentra el mecanismo
 
-
-### Motores Paso a Paso
+## Motor Paso a Paso
 
 El motor paso a paso es un convertidor electromecánico digital-analógico que transforma impulsos eléctricos discretos en movimientos mecánicos angulares precisos. A diferencia de los motores de corriente continua convencionales que giran libremente al aplicarles voltaje, el motor paso a paso rota en incrementos angulares fijos conocidos como "pasos".
 
@@ -103,23 +154,32 @@ Dado que las salidas lógicas del microcontrolador carecen de la capacidad de co
 
 Este controlador cumple dos funciones criticas. Por un lado nos permite regular la corriente que fluye hacia las bobinas del motor mediante un potenciometro, permitiendo ajustar el valor apropiado para que el motor no se salte pasos y pierda referencia. Y por otro lado este controlador nos permite realizar Microstepping, para posicionar el rotor en ubicaciones intermedias entre los polos magnéticos y permitirnos tener una resolucion angular de 0.1125° por paso. No solo nos da una presicion mucho mayor, sino que reduce el ruido de funcionamiento.
 
-## Escaneo 3D
+<br>
+<h1 align="center">Escaneo 3D</h1>
+
 El escaneo 3D es el proceso de analizar un objeto del mundo real para recolectar datos sobre su forma y construir modelos digitales tridimensionales. Los métodos de escaneo se dividen generalmente en dos categorías: pasivos y activos.
 
-**Métodos Pasivos:** Utilizan la luz ambiental existente para capturar la forma, como la estereoscopía (usar dos cámaras) o la "forma a partir de silueta". Estos métodos suelen enfrentar dificultades con superficies de textura uniforme, ya que les cuesta identificar el mismo punto en el espacio en múltiples vistas.
+- **Métodos Pasivos:** Utilizan la luz ambiental existente para capturar la forma, como la estereoscopía (usar dos cámaras) o la "forma a partir de silueta". Estos métodos suelen enfrentar dificultades con superficies de textura uniforme, ya que les cuesta identificar el mismo punto en el espacio en múltiples vistas.
 
-**Métodos Activos:** Superan este problema emitiendo su propia fuente de iluminación controlada. Nuestro proyecto se enmarca en esta categoría. Al proyectar un patrón de luz conocido (en este caso, una línea láser) y observar su interacción con el objeto, se puede determinar la geometría de la superficie de manera robusta.
+- **Métodos Activos:** Superan este problema emitiendo su propia fuente de iluminación controlada. Nuestro proyecto se enmarca en esta categoría. Al proyectar un patrón de luz conocido (en este caso, una línea láser) y observar su interacción con el objeto, se puede determinar la geometría de la superficie de manera robusta.
 
 ### Triangulación laser
 La triangulación láser es el principio fundamental de la estación de escaneo. Se basa en una configuración geométrica precisa que involucra un conjunto cámara-proyector láser y un motor que los hace girar sobre un eje. En este sistema, el proyector no emite un simple punto, sino una "hendidura" o plano de luz.
 
+<p align="center">
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/Triangulacion.png" alt="Distribución del escáner para Triangulación Láser" width="50%"/>
+  <br>
+  <em>Distribución del escáner para Triangulación Láser</em>
+</p>
+
+
 El concepto de funcionamiento es el siguiente:
 
-**El Plano Láser:** El proyector láser emite una hoja de luz plana. Normalmente la posición y orientación de este plano en el espacio tridimensional en este tipo de escáneres 3D se determina mediante la realización de una calibración. Pero en este caso el sistema se diseñó desde cero, conociendo su posición y no requiriendo de una calibración.
+1. **El Plano Láser:** El proyector láser emite una hoja de luz plana. Normalmente la posición y orientación de este plano en el espacio tridimensional en este tipo de escáneres 3D se determina mediante la realización de una calibración. Pero en este caso el sistema se diseñó desde cero, conociendo su posición y no requiriendo de una calibración.
 
-**El Rayo de la Cámara:** La cámara, modelada como un sistema "pinhole" (estenopeico), observa la escena. Cuando el plano láser incide sobre la superficie del objeto, crea una línea de luz visible y la cámara registra este perfil en un conjunto de píxeles específicos en su sensor.Cada píxel que detecta esta línea de luz es definida como un "rayo" (una línea recta en el espacio 3D) que viaja desde el centro de proyección de la cámara, a través del píxel, y hacia el objeto.
+2. **El Rayo de la Cámara:** La cámara, modelada como un sistema "pinhole" (estenopeico), observa la escena. Cuando el plano láser incide sobre la superficie del objeto, crea una línea de luz visible y la cámara registra este perfil en un conjunto de píxeles específicos en su sensor.Cada píxel que detecta esta línea de luz es definida como un "rayo" (una línea recta en el espacio 3D) que viaja desde el centro de proyección de la cámara, a través del píxel, y hacia el objeto.
 
-**Triangulación (Intersección Rayo-Plano):** Dado que se conoce la geometría del sistema, para cada píxel iluminado por el láser, se tienen dos elementos geométricos definidos: El plano de luz emitido por el láser, y el rayo de visión definido por el píxel en la cámara. La posición 3D exacta del punto en la superficie del objeto se calcula encontrando la intersección única entre este rayo y el plano. Este cálculo geométrico es lo que da nombre a la "triangulación".
+3. **Triangulación (Intersección Rayo-Plano):** Dado que se conoce la geometría del sistema, para cada píxel iluminado por el láser, se tienen dos elementos geométricos definidos: El plano de luz emitido por el láser, y el rayo de visión definido por el píxel en la cámara. La posición 3D exacta del punto en la superficie del objeto se calcula encontrando la intersección única entre este rayo y el plano. Este cálculo geométrico es lo que da nombre a la "triangulación".
 
 
 ### Nube de puntos
@@ -128,18 +188,17 @@ El principio de triangulación permite capturar un perfil 2D del objeto. Para co
 
 En la configuración de este proyecto, el conjunto de cámara y láser gira 360 grados alrededor de la pieza, mientras la pieza permanece estática. El proceso de adquisición de datos sigue estos pasos:
 
-**Captura de Perfil:** En una posición angular fija, el láser ilumina la pieza y la cámara captura una imagen del perfil de luz.
+1. **Captura de Perfil:** En una posición angular fija, el láser ilumina la pieza y la cámara captura una imagen del perfil de luz.
 
-**Cálculo de Puntos 3D:** Mediante el procesamiento de la imagen para detectar la línea láser y la aplicación del método de triangulación (intersección rayo-plano), se calcula la nube de puntos 3D que componen este perfil.
+2. **Cálculo de Puntos 3D:** Mediante el procesamiento de la imagen para detectar la línea láser y la aplicación del método de triangulación (intersección rayo-plano), se calcula la nube de puntos 3D que componen este perfil.
 
-**Rotación:** El sistema cama-láser gira un ángulo conocido y pequeño.
+3. **Rotación:** El sistema cama-láser gira un ángulo conocido y pequeño.
 
-**Repetición**: Se repiten los pasos 1 y 2 para la nueva posición angular, generando un nuevo perfil de puntos 3D.
+4. **Repetición**: Se repiten los pasos 1 y 2 para la nueva posición angular, generando un nuevo perfil de puntos 3D.
 
-**Fusión:** Este proceso se repite para una rotación completa de 360 grados. Dado que se conoce la posición del centro de giro y el ángulo de cada paso, todos los perfiles capturados se pueden transformar a un sistema de coordenadas global común. La "fusión" de todos estos perfiles individuales da como resultado la nube de puntos 3D completa que representa la geometría total del objeto.
+5. **Fusión:** Este proceso se repite para una rotación completa de 360 grados. Dado que se conoce la posición del centro de giro y el ángulo de cada paso, todos los perfiles capturados se pueden transformar a un sistema de coordenadas global común. La "fusión" de todos estos perfiles individuales da como resultado la nube de puntos 3D completa que representa la geometría total del objeto.
 
-
-
+<br>
 <h1 align="center">Tecnologías y Recursos</h1>
 
 A continuación se detalla en listas las diferentes tecnologías y recursos utilizados para llevar a cabo el proyecto.
@@ -168,7 +227,6 @@ A continuación se detalla en listas las diferentes tecnologías y recursos util
 | **PyInstaller** | Empaquetado del programa en un archivo ejecutable |
 | **Tkinter** | Diseño de interfaz visual de usuario (GUI) |
 
-
 ## Hardware y Electrónica
 
 | Componente | Uso en el proyecto |
@@ -181,6 +239,7 @@ A continuación se detalla en listas las diferentes tecnologías y recursos util
 | **Sensor TOF** | Sensor de tiempo de vuelo para realizar el centrado de la pieza sobre la cinta. |
 | **Sensor de efecto Hall** | Utilizado para realizar el homing del escáner. |
 
+<br>
 <h1 align="center">Listado de Componentes</h1>
 
 A continuación se detalla el BOM (Bill of Materials) del proyecto:
@@ -202,9 +261,12 @@ A continuación se detalla el BOM (Bill of Materials) del proyecto:
 | 1 | VARILLA ROSCADA 8x1.25 | TRANSPORTE Y ESCANEO |
 | - | VARIOS (Tornillos, Tuercas, Maderas) | ESTRUCTURA Y ENSAMBLAJE |
 
+<br>
 <h1 align="center">Diseños y Esquemáticos</h1>
 
-Se presentan los esquemáticos y planos de vista explosionada de los diferentes mecanismos que componen al prototipo
+## Diseño Mecánico
+
+Se presentan los esquemáticos y planos de vista explosionada de los diferentes mecanismos que componen al prototipo.
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/6662ea1c-b2b9-45bd-9ced-6135f363e980" alt="Plano 1" width="800"/>
@@ -224,6 +286,13 @@ Se presentan los esquemáticos y planos de vista explosionada de los diferentes 
   <em>Vista explosionada del mecanismo de la Cinta Transportadora</em>
 </p>
 
+## Diseño Electrónico
+
+A continuación se presentan los planos que contienen el detalle del diseño electrónico del sistema.
+
+
+
+<br>
 <h1 align="center">Interfaz de Usuario y Funcionamiento</h1>
 
 Para utilizar el prototipo es necesario ejecutar el software dedicado, este guiará al usuario a traves del proceso mediante una interfaz de usuario, dando información relevante del estado actual y posibles errores.
