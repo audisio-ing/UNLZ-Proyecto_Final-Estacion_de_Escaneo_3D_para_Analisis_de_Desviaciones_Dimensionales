@@ -269,19 +269,19 @@ A continuación se detalla el BOM (Bill of Materials) del proyecto:
 Se presentan los esquemáticos y planos de vista explosionada de los diferentes mecanismos que componen al prototipo.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/6662ea1c-b2b9-45bd-9ced-6135f363e980" alt="Plano 1" width="800"/>
+  <img src="https://github.com/user-attachments/assets/6662ea1c-b2b9-45bd-9ced-6135f363e980" alt="Vista explosionada del mecanismo del Escáner" width="80%"/>
   <br>
   <em>Vista explosionada del mecanismo del Escáner</em>
 </p>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/e3c31136-6ab0-4f31-bc53-0533ac6cd761" alt="Circuito" width="800"/>
+  <img src="https://github.com/user-attachments/assets/e3c31136-6ab0-4f31-bc53-0533ac6cd761" alt="Vista explosionada de la Caja Contenedora" width="80%"/>
   <br>
   <em>Vista explosionada de la Caja Contenedora</em>
 </p>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/705479f7-7092-40ff-b4d8-b58947d4625a" alt="Plano 2" width="800"/>
+  <img src="https://github.com/user-attachments/assets/705479f7-7092-40ff-b4d8-b58947d4625a" alt="Vista explosionada del mecanismo de la Cinta Transportadora" width="80%"/>
   <br>
   <em>Vista explosionada del mecanismo de la Cinta Transportadora</em>
 </p>
@@ -290,7 +290,17 @@ Se presentan los esquemáticos y planos de vista explosionada de los diferentes 
 
 A continuación se presentan los planos que contienen el detalle del diseño electrónico del sistema.
 
+<p align="center">
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/Circuito.jpg" alt="Circuito Electrónico" width="80%"/>
+  <br>
+  <em>Circuito Electrónico</em>
+</p>
 
+<p align="center">
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/Conexión%20Arduino.jpg" alt="Conexión con Microcontrolador Arduino Uno" width="80%"/>
+  <br>
+  <em>Conexión con Microcontrolador Arduino Uno</em>
+</p>
 
 <br>
 <h1 align="center">Interfaz de Usuario y Funcionamiento</h1>
@@ -364,8 +374,9 @@ Ahora que ya obtuvimos una nube de puntos a escala de la pieza, procedemos a la 
 
 Previo a realizar la comparación es necesario dirigirse a la pestaña de ajustes, donde el usuario deberá seleccionar la ruta de destino de los 3 escaneos que usará como patrones en la comparación, y tambien ingresar un porcentaje de similitud mínimo que indicará si la pieza es aceptada o rechazada.
 
-Ahora sí procedemos con la comparación, 
+Ahora sí procedemos con la comparación,
 
+<br>
 <h1 align="center">Escaneos Obtenidos</h1>
 
 A continuación se muestran los resultados obtenidos del escaneo de las diferentes piezas planteadas, todos los escaneos fueron realizados con 100 muestras.
@@ -388,6 +399,7 @@ A continuación se muestran los resultados obtenidos del escaneo de las diferent
 
 Para lograr una comparación
 
+<br>
 <h1 align="center">Errores Cometidos y Lecciones Aprendidas</h1>
 
 A la hora de realizar el proyecto, nos encontramos con varias problematicas, las cuales pasaremos a desarrollar a continuacion, incluyendo la manera que encontramos para solucionarlos.
@@ -472,6 +484,12 @@ A continuación se detallan las carpetas que estructuran este repositorio:
 * **INFORMES:** Documentación, Gantt, informes PDF y manuales.
 
 ---
+
+
+<p align="center">
+  <img src="https://github.com/JonatanBogadoUNLZ/PPS-Jonatan-Bogado/blob/9952aac097aca83a1aadfc26679fc7ec57369d82/LOGO%20AZUL%20HORIZONTAL%20-%20fondo%20transparente.png" width="45%"/>
+</p>
+
 <p align="center">
   <em><b>Proyecto realizado por Audisio Juan Pablo, Garrahan Alan y Reyna Valentin.</b></em>
   <br>
