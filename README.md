@@ -106,7 +106,7 @@ Este controlador cumple dos funciones criticas. Por un lado nos permite regular 
 ## Escaneo 3D
 El escaneo 3D es el proceso de analizar un objeto del mundo real para recolectar datos sobre su forma y construir modelos digitales tridimensionales. Los métodos de escaneo se dividen generalmente en dos categorías: pasivos y activos.
 
-**Métodos Pasivos:** Utilizan la luz ambiental existente para capturar la forma, como la estereoscopía (usar dos cámaras) o la "forma a partir de silueta". Estos métodos suelen enfrentar dificultades con superficies de textura uniforme, ya que les cuesta encontrar "correspondencias" (identificar el mismo punto en el espacio en múltiples vistas).
+**Métodos Pasivos:** Utilizan la luz ambiental existente para capturar la forma, como la estereoscopía (usar dos cámaras) o la "forma a partir de silueta". Estos métodos suelen enfrentar dificultades con superficies de textura uniforme, ya que les cuesta identificar el mismo punto en el espacio en múltiples vistas.
 
 **Métodos Activos:** Superan este problema emitiendo su propia fuente de iluminación controlada. Nuestro proyecto se enmarca en esta categoría. Al proyectar un patrón de luz conocido (en este caso, una línea láser) y observar su interacción con el objeto, se puede determinar la geometría de la superficie de manera robusta.
 
