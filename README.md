@@ -451,8 +451,10 @@ A la hora de realizar el proyecto, nos encontramos con varias problematicas, las
 
   + Utilizar una caja de escaneo de un material más resitente, tanto para darle más rigidez y que soporte mejor los componentes, como para que la unión de la cinta con la caja sea mejor y quede mejor centrada.
 
-**Cámara**
-  + Utilizar un giroscopio para evitar cualquier movimiento en Z de la cámara, el cual afectaría a la calibración.
+**Mecanismo giratorio**
+  + Implementacion de Anillo colector para evitar el enriedo de cables
+  + Utilizacion de Poleas metalicas
+  + Reemplazo de varilla roscada por una varilla mecanizada que se adapte mejor a las necesidades del mecanismo
 
 **Escaneo**
   
