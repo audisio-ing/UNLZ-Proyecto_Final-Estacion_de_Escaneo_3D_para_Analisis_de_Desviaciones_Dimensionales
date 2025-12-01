@@ -5,6 +5,7 @@ import serial
 import time
 import json
 import sys
+from pathlib import Path
 import tkinter as tk
 from tkinter import messagebox, ttk
 import threading
@@ -12,11 +13,13 @@ from PIL import Image, ImageTk
 import pyvista as pv
 
 # Archivos de configuración
-SETUP = "Setup.json"
+CONFIG_FILE = "Configuracion.json"
 CALIBRACION = "CalibracionZoom.npz"
-PARAMETROS = "Parametros.json"
-OUTPUT = "Escaneo.csv"
-CONFIG_ESCANEO = "Configuracion_Escaneo.json"
+
+# Directorio para guardar escaneos
+SCANS_DIR = Path.cwd() / 'Escaneos'
+SCANS_DIR.mkdir(exist_ok=True)
+OUTPUT = str(SCANS_DIR / 'Escaneo.csv')
 
 # Parámetros por defecto
 BAUDRATE = 115200
@@ -44,37 +47,38 @@ thread_escaneo = None
 # =============================================================================
 
 def cargar_parametros():
-    """Carga todos los parámetros del sistema."""
+    """Carga todos los parámetros del sistema desde el archivo unificado."""
     global IND_CAM, THRESHOLD, ARDUINO
     global THETA_DEG, CAM_RADIUS, CAM_HEIGHT, CAM_PITCH
     global OFFSET_RADIAL, OFFSET_ANGLE_DEG, OFFSET_Z, SCALE_FACTOR
     global XY_ASPECT_FACTOR, Z_ASPECT_FACTOR, Z_MIN, Z_MAX, MODULO_MAX
     
     try:
-        # Cargar parámetros de escaneo
-        with open(PARAMETROS, 'r') as f:
-            params = json.load(f)
-        
-        THETA_DEG = params['THETA_DEG']
-        CAM_RADIUS = params['CAM_RADIUS']
-        CAM_HEIGHT = params['CAM_HEIGHT']
-        CAM_PITCH = params['CAM_PITCH']
-        OFFSET_RADIAL = params['OFFSET_RADIAL']
-        OFFSET_ANGLE_DEG = params['OFFSET_ANGLE_DEG']
-        OFFSET_Z = params['OFFSET_Z']
-        SCALE_FACTOR = params['SCALE_FACTOR']
-        XY_ASPECT_FACTOR = params['XY_ASPECT_FACTOR']
-        Z_ASPECT_FACTOR = params['Z_ASPECT_FACTOR']
-        Z_MIN = params['Z_MIN']
-        Z_MAX = params['Z_MAX']
-        MODULO_MAX = params['MODULO_MAX']
-        
-        # Cargar configuración de cámara
-        with open(SETUP, 'r') as f:
+        # Cargar configuración unificada
+        with open(CONFIG_FILE, 'r') as f:
             config = json.load(f)
-        IND_CAM = config["camera_index"]
-        THRESHOLD = config["threshold"]
-        ARDUINO = config["arduino_port"]
+        
+        # Obtener parámetros de calibración
+        params = config.get('parametros_calibracion', {})
+        THETA_DEG = params.get('THETA_DEG', 30.0)
+        CAM_RADIUS = params.get('CAM_RADIUS', 226.0)
+        CAM_HEIGHT = params.get('CAM_HEIGHT', 100.0)
+        CAM_PITCH = params.get('CAM_PITCH', 10.0)
+        OFFSET_RADIAL = params.get('OFFSET_RADIAL', 0.0)
+        OFFSET_ANGLE_DEG = params.get('OFFSET_ANGLE_DEG', 0.0)
+        OFFSET_Z = params.get('OFFSET_Z', 0.0)
+        SCALE_FACTOR = params.get('SCALE_FACTOR', 1.0)
+        XY_ASPECT_FACTOR = params.get('XY_ASPECT_FACTOR', 0.90)
+        Z_ASPECT_FACTOR = params.get('Z_ASPECT_FACTOR', 0.90)
+        Z_MIN = params.get('Z_MIN', 10.0)
+        Z_MAX = params.get('Z_MAX', 110.0)
+        MODULO_MAX = params.get('MODULO_MAX', 60.0)
+        
+        # Obtener configuración de cámara
+        setup = config.get('setup_camara', {})
+        IND_CAM = setup.get("camera_index", 0)
+        THRESHOLD = setup.get("threshold", 100)
+        ARDUINO = setup.get("arduino_port", "")
         
         # Cargar calibración
         calib = np.load(CALIBRACION)
@@ -89,27 +93,37 @@ def cargar_parametros():
 
 
 def cargar_config_escaneo():
-    """Carga la configuración de escaneo."""
+    """Carga la configuración de escaneo del archivo unificado."""
     global ESCANEO_CONFIG
     
-    if not os.path.exists(CONFIG_ESCANEO):
-        guardar_config_escaneo()
-        return
-    
     try:
-        with open(CONFIG_ESCANEO, 'r') as f:
-            ESCANEO_CONFIG = json.load(f)
-    except:
-        pass
+        with open(CONFIG_FILE, 'r') as f:
+            config = json.load(f)
+        escaneo = config.get('configuracion_escaneo', {})
+        ESCANEO_CONFIG = {
+            "num_muestras": escaneo.get("num_muestras", 10),
+            "tiempo_rotacion": escaneo.get("tiempo_rotacion", 40.0)
+        }
+    except Exception as e:
+        print(f"Error cargando configuración de escaneo: {e}")
+        # Usar valores por defecto si hay error
 
 
 def guardar_config_escaneo():
-    """Guarda la configuración de escaneo."""
+    """Guarda la configuración de escaneo en el archivo unificado."""
     try:
-        with open(CONFIG_ESCANEO, 'w') as f:
-            json.dump(ESCANEO_CONFIG, f, indent=4)
-    except:
-        pass
+        # Cargar configuración completa
+        with open(CONFIG_FILE, 'r') as f:
+            config = json.load(f)
+        
+        # Actualizar solo la sección configuracion_escaneo
+        config['configuracion_escaneo'] = ESCANEO_CONFIG
+        
+        # Guardar de vuelta
+        with open(CONFIG_FILE, 'w') as f:
+            json.dump(config, f, indent=4)
+    except Exception as e:
+        print(f"Error guardando configuración de escaneo: {e}")
 
 
 import os
@@ -224,8 +238,7 @@ class EstacionEscaneo:
         # Cargar parámetros
         self.K_matrix, self.dist_coef, success = cargar_parametros()
         if not success:
-            messagebox.showerror("Error", "No se pudieron cargar los parámetros del sistema")
-            self.root.destroy()
+            self.pantalla_error("Error al cargar parámetros", "No se pudieron cargar los parámetros del sistema.\nVerifica el archivo de configuración.")
             return
         
         cargar_config_escaneo()
@@ -244,13 +257,77 @@ class EstacionEscaneo:
             ser.reset_output_buffer()
             return True
         except Exception as e:
-            messagebox.showerror("Error", f"No se pudo conectar a Arduino: {e}")
+            print(f"Error conectando a Arduino: {e}")
             return False
     
     def limpiar_ventana(self):
         """Limpia la ventana."""
         for widget in self.root.winfo_children():
             widget.destroy()
+    
+    def pantalla_error(self, titulo_error, descripcion):
+        """Muestra pantalla de error sin popup."""
+        self.limpiar_ventana()
+        
+        # Frame principal
+        frame_main = tk.Frame(self.root, bg='#1a1a2e')
+        frame_main.pack(fill='both', expand=True)
+        
+        # Espaciador superior
+        tk.Frame(frame_main, bg='#1a1a2e').pack(fill='both', expand=True)
+        
+        # Frame de error (recuadro rojo grande)
+        frame_error = tk.Frame(frame_main, bg='#f44336', relief='raised', bd=3, padx=30, pady=30)
+        frame_error.pack(expand=True, padx=40, pady=40, ipadx=20, ipady=20)
+        
+        # Icono de error
+        label_icono = tk.Label(frame_error, text="⚠️", font=("Segoe UI", 60),
+                              bg='#f44336', fg='white')
+        label_icono.pack(pady=10)
+        
+        # Título del error
+        label_titulo = tk.Label(frame_error, text=titulo_error,
+                               font=("Segoe UI", 24, "bold"),
+                               bg='#f44336', fg='white', justify='center')
+        label_titulo.pack(pady=15)
+        
+        # Descripción del error
+        label_desc = tk.Label(frame_error, text=descripcion,
+                             font=("Segoe UI", 12),
+                             bg='#f44336', fg='white', justify='center',
+                             wraplength=400)
+        label_desc.pack(pady=15)
+        
+        # Espaciador inferior
+        tk.Frame(frame_main, bg='#1a1a2e').pack(fill='both', expand=True)
+        
+        # Frame para botón
+        frame_boton = tk.Frame(self.root, bg='#1a1a2e')
+        frame_boton.pack(pady=30)
+        
+        btn_reintentar = tk.Button(frame_boton, text="🔄 REINTENTAR",
+                                  font=("Segoe UI", 12, "bold"),
+                                  bg='#ff9800', fg='white',
+                                  command=self.reintentar_inicializacion,
+                                  cursor="hand2", relief=tk.FLAT,
+                                  activebackground='#ffb74d', activeforeground='white',
+                                  padx=30, pady=12)
+        btn_reintentar.pack()
+    
+    def reintentar_inicializacion(self):
+        """Reintenta la inicialización del sistema."""
+        try:
+            # Reintentar cargar parámetros
+            self.K_matrix, self.dist_coef, success = cargar_parametros()
+            if not success:
+                self.pantalla_error("Error al cargar parámetros", 
+                                  "No se pudieron cargar los parámetros del sistema.\nVerifica el archivo de configuración.")
+                return
+            
+            cargar_config_escaneo()
+            self.pantalla_inicio()
+        except Exception as e:
+            self.pantalla_error("Error desconocido", str(e))
     
     def pantalla_inicio(self):
         """Pantalla inicial con instrucciones."""
@@ -392,28 +469,31 @@ class EstacionEscaneo:
             num_muestras = int(self.entry_muestras.get())
             
             if num_muestras < 1:
-                messagebox.showerror("Error", "Valores no válidos")
+                self.pantalla_error("Valores inválidos", 
+                                  "El número de muestras debe ser mayor a 0.")
                 return
             
             ESCANEO_CONFIG["num_muestras"] = num_muestras
             guardar_config_escaneo()
             
-            messagebox.showinfo("Éxito", "Configuración guardada correctamente")
             self.pantalla_inicio()
         except ValueError:
-            messagebox.showerror("Error", "Ingresa números válidos")
+            self.pantalla_error("Error de formato", 
+                              "Ingresa números válidos para las muestras.")
     
     def comenzar_escaneo(self):
         """Comienza el escaneo."""
         # Inicializar la cámara de forma persistente
         if not self.inicializar_camara():
-            messagebox.showerror("Error", "No se pudo inicializar la cámara")
+            self.pantalla_error("Error de cámara", 
+                              "No se pudo inicializar la cámara.\nVerifica la conexión y los permisos.")
             return
         
         # Conectar a Arduino justo ahora
         if not self.conectar_arduino():
             self.liberar_camara()
-            messagebox.showerror("Error", "No hay conexión con Arduino")
+            self.pantalla_error("Error de conexión", 
+                              f"No hay conexión con Arduino en puerto: {ARDUINO}\n\nVerifica que Arduino esté conectado y encendido.")
             return
         
         self.escaneo_en_curso = True
@@ -781,7 +861,7 @@ class EstacionEscaneo:
                 
                 time.sleep(0.1)
             
-            # ===== FASE 4: ESPERAR FINALIZACIÓN Y EXPULSIÓN (BARRA SIGUE VISIBLE) =====
+            # ===== FASE 4: ESPERAR FINALIZACIÓN Y EXPULSIÓN =====
             print(f"\n[FASE 4] Esperando finalización y expulsión...")
             
             tiempo_espera_fin = time.time()
@@ -852,6 +932,8 @@ class EstacionEscaneo:
         except Exception as e:
             self.actualizar_estado(f"ERROR: {str(e)}")
             self.escaneo_en_curso = False
+            # Mostrar pantalla de error después de 2 segundos
+            self.root.after(2000, lambda: self.pantalla_error("Error durante escaneo", str(e)))
     
     def actualizar_estado(self, texto):
         """Actualiza el estado sin emojis."""
@@ -970,7 +1052,7 @@ class EstacionEscaneo:
             plotter.view_isometric()
             plotter.show()
         except Exception as e:
-            messagebox.showerror("Error", f"Error mostrando gráfico: {e}")
+            self.pantalla_error("Error en gráfico 3D", f"No se pudo mostrar el gráfico:\n{str(e)}")
     
     def mostrar_grafico_3d_y_volver(self, nube_puntos):
         """Muestra el gráfico 3D y luego vuelve al inicio."""
@@ -1009,11 +1091,6 @@ class EstacionEscaneo:
                               command=self.pantalla_inicio,
                               cursor="hand2")
         btn_volver.pack(pady=40)
-
-
-# =============================================================================
-# PROGRAMA PRINCIPAL
-# =============================================================================
 
 if __name__ == "__main__":
     root = tk.Tk()
