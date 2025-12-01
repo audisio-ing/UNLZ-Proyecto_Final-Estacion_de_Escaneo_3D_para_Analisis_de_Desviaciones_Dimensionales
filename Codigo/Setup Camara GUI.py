@@ -7,7 +7,7 @@ import json
 import serial.tools.list_ports
 
 # Archivo de configuración
-CONFIG_FILE = "Setup.json"
+CONFIG_FILE = "Configuracion.json"
 
 # Paleta de colores - Tema Oscuro
 COLORS = {
@@ -18,7 +18,7 @@ COLORS = {
     'acento_hover': '#5636d3',      # Púrpura claro
     'exito': '#00d966',             # Verde neon
     'error': '#f44336',             # Rojo
-    'texto_principal': 'white',     # Blanco
+    'texto_principal': 'white',       # Blanco
     'texto_secundario': '#b0b0b0'   # Gris claro
 }
 
@@ -26,35 +26,49 @@ COLORS = {
 cam_index = 0
 threshold_value = 100
 arduino_port = ""
-config_guardada = False
 
 cap = None
 
 def load_config():
-    # Cargar configuración previa si existe
+    # Cargar configuración
     global cam_index, threshold_value, arduino_port
     try:
         with open(CONFIG_FILE, "r") as f:
             config = json.load(f)
-            cam_index = config.get("camera_index", 0)
-            threshold_value = config.get("threshold", 100)
-            arduino_port = config.get("arduino_port", "")
+            setup = config.get("setup_camara", {})
+            cam_index = setup.get("camera_index")
+            threshold_value = setup.get("threshold")
+            arduino_port = setup.get("arduino_port")
     except FileNotFoundError:
         pass
 
 def save_config():
-    global config_guardada
-    config = {
+    # Cargar configuración completa
+    try:
+        with open(CONFIG_FILE, "r") as f:
+            config = json.load(f)
+    except FileNotFoundError:
+        # Crear estructura por defecto si no existe
+        config = {
+            "version": "1.0",
+            "descripcion": "Archivo de configuración unificado",
+            "setup_camara": {},
+            "parametros_calibracion": {},
+            "parametros_comparacion": {},
+            "configuracion_escaneo": {}
+        }
+    
+    # Actualizar solo la sección setup_camara
+    config["setup_camara"] = {
         "camera_index": cam_index,
         "threshold": threshold_value,
         "arduino_port": arduino_port
     }
+    
     with open(CONFIG_FILE, "w") as f:
         json.dump(config, f, indent=4)
     
-    config_guardada = True
     messagebox.showinfo("Éxito", "Configuración guardada correctamente")
-    root.after(2000, lambda: globals().__setitem__('config_guardada', False))
 
 def update_camera(index):
     global cap, cam_index
@@ -255,18 +269,18 @@ else:
                         fg=COLORS['error'])
 port_info.pack(anchor='w', padx=3, pady=(2, 0), fill='x')
 
-# === BOTONES DE ACCIÓN ===
-botones_frame = tk.Frame(root, bg=COLORS['bg_principal'])
-botones_frame.pack(fill='x', padx=12, pady=8)
+# --- Sección 4: Botones Arduino (Grid 2x2) ---
+botones_arduino_frame = tk.Frame(col_derecha, bg=COLORS['bg_secundario'])
+botones_arduino_frame.pack(fill='x', pady=3, padx=3)
 
 def crear_boton_mejorado(parent, text, command, bg_color, fg_color, 
-                         hover_bg, active_bg, font_size=10):
+                         hover_bg, active_bg, font_size=9):
     """Crea un botón con estilo mejorado y efectos hover"""
     btn = tk.Button(parent, text=text, command=command,
                    font=("Segoe UI", font_size, "bold"),
                    bg=bg_color, fg=fg_color,
                    activebackground=active_bg, activeforeground=fg_color,
-                   relief='flat', bd=0, padx=15, pady=7,
+                   relief='flat', bd=0, padx=12, pady=6,
                    cursor="hand2", highlightthickness=0)
     
     # Efectos hover
@@ -281,19 +295,19 @@ def crear_boton_mejorado(parent, text, command, bg_color, fg_color,
     
     return btn
 
-btn_guardar = crear_boton_mejorado(botones_frame, "💾 GUARDAR",
-                                  save_config,
-                                  COLORS['exito'], COLORS['bg_principal'],
-                                  '#00ff7a', '#00e060',
-                                  font_size=10)
-btn_guardar.pack(side='left', padx=8, fill='x', expand=True)
+btn_guardar_config = crear_boton_mejorado(botones_arduino_frame, "💾 GUARDAR",
+                                         save_config,
+                                         COLORS['exito'], COLORS['bg_principal'],
+                                         '#00ff7a', '#00e060',
+                                         font_size=9)
+btn_guardar_config.pack(side='left', padx=3, fill='both', expand=True)
 
-btn_cerrar = crear_boton_mejorado(botones_frame, "❌ CERRAR",
-                                 root.quit,
-                                 COLORS['acento_primario'], COLORS['texto_principal'],
-                                 COLORS['acento_hover'], '#4a3dd8',
-                                 font_size=10)
-btn_cerrar.pack(side='left', padx=8, fill='x', expand=True)
+btn_cancelar = crear_boton_mejorado(botones_arduino_frame, "❌ CANCELAR",
+                                   root.quit,
+                                   COLORS['error'], COLORS['texto_principal'],
+                                   '#ff6b6b', '#e53935',
+                                   font_size=9)
+btn_cancelar.pack(side='left', padx=3, fill='both', expand=True)
 
 # Loop de video
 update_frame()
@@ -302,7 +316,6 @@ update_frame()
 def on_closing():
     if cap is not None:
         cap.release()
-    save_config()
     root.destroy()
 
 root.protocol("WM_DELETE_WINDOW", on_closing)
