@@ -8,21 +8,19 @@ import os
 import pyvista as pv
 
 # --- SECCIÓN DE PARÁMETROS INICIALES ---
-CONFIG_FILE = "Setup.json"
+CONFIG_FILE = "Configuracion.json"
 CALIB_FILE = "CalibracionZoom.npz"
 OBJ_FILE_PATH = "Pieza.obj"
 NUM_SIMULATED_SAMPLES = 2
-SAVED_PARAMS_FILE = "Parametros.json" # Archivo para cargar y guardar ajustes
 
 # Parámetro Fijo para el OBJ
 OBJ_SCALE_FACTOR = 10.0
-# ----------------------------------------------------
 
-# --- NUEVA FUNCIÓN PARA CARGAR PARÁMETROS O USAR DEFAULTS ---
+# Cargar Parámetros desde archivo
 def load_or_create_params(filename):
     """
-    Intenta cargar los parámetros desde un archivo JSON. Si no existe o falla,
-    devuelve un diccionario con valores por defecto.
+    Intenta cargar los parámetros desde la sección 'parametros_calibracion' del archivo JSON unificado.
+    Si no existe o falla, devuelve un diccionario con valores por defecto.
     """
     # Define los valores iniciales por defecto
     initial_offset_x = (-7.2) - 15.62
@@ -46,7 +44,9 @@ def load_or_create_params(filename):
     try:
         with open(filename, 'r') as f:
             print(f"Cargando parámetros desde '{filename}'...")
-            loaded_params = json.load(f)
+            config = json.load(f)
+            # Extrae la sección 'parametros_calibracion' del archivo unificado
+            loaded_params = config.get('parametros_calibracion', {})
             final_params = default_params.copy()
             final_params.update(loaded_params)
             print("Parámetros cargados exitosamente.")
@@ -59,13 +59,16 @@ def load_or_create_params(filename):
         return default_params
 
 # --- DICCIONARIO DE PARÁMETROS INTERACTIVOS (ahora se carga dinámicamente) ---
-params = load_or_create_params(SAVED_PARAMS_FILE)
+params = load_or_create_params(CONFIG_FILE)
 
 # --- CARGA DE CONFIGURACIÓN Y CALIBRACIÓN ---
 print("\nScanner Interactivo con PyVista\n")
 try:
-    with open(CONFIG_FILE, 'r') as f: config = json.load(f)
-    IND_CAM, THRESHOLD = config.get("camera_index", 3), config.get("threshold", 120)
+    with open(CONFIG_FILE, 'r') as f: 
+        config = json.load(f)
+    # Lee desde la sección 'setup_camara' del archivo unificado
+    setup = config.get('setup_camara', {})
+    IND_CAM, THRESHOLD = setup.get("camera_index", 3), setup.get("threshold", 120)
     print(f"Configuración cargada: Cámara={IND_CAM}, Umbral={THRESHOLD}")
 except Exception as e: print(f"Error cargando configuración: {e}"); sys.exit(1)
 
@@ -90,10 +93,22 @@ def capturar_rayos(IND_CAM, threshold_val, k_matrix, dist_coeffs_val):
     return rays
 
 def save_params(state):
-    """Guarda el diccionario de parámetros actual en un archivo JSON."""
-    with open(SAVED_PARAMS_FILE, 'w') as f:
-        json.dump(params, f, indent=4)
-    print(f"\n¡Parámetros guardados exitosamente en '{SAVED_PARAMS_FILE}'!\n")
+    """Guarda el diccionario de parámetros actual en la sección 'parametros_calibracion' del archivo JSON unificado."""
+    try:
+        # Carga el archivo completo
+        with open(CONFIG_FILE, 'r') as f:
+            config = json.load(f)
+        
+        # Actualiza solo la sección 'parametros_calibracion'
+        config['parametros_calibracion'] = params
+        
+        # Guarda el archivo completo
+        with open(CONFIG_FILE, 'w') as f:
+            json.dump(config, f, indent=4)
+        
+        print(f"\n¡Parámetros guardados exitosamente en '{CONFIG_FILE}' (sección: parametros_calibracion)!\n")
+    except Exception as e:
+        print(f"Error al guardar parámetros: {e}\n")
 
 def update_scan(param_name, value):
     params[param_name] = value
