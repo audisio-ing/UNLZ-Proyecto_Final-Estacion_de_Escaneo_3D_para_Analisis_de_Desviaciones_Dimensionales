@@ -1,0 +1,34 @@
+{
+    "setup_camara": {
+        "camera_index": 3,
+        "threshold": 235,
+        "arduino_port": "COM8"
+    },
+    "parametros_calibracion": {
+        "THETA_DEG": 30.0,
+        "CAM_RADIUS": 226.0,
+        "CAM_HEIGHT": 100.0,
+        "CAM_PITCH": 10.0,
+        "OFFSET_RADIAL": 24.71591062116299,
+        "OFFSET_ANGLE_DEG": -150.0,
+        "OFFSET_Z": 118.20652173913044,
+        "SCALE_FACTOR": 1.0,
+        "XY_ASPECT_FACTOR": 0.9,
+        "Z_ASPECT_FACTOR": 0.9,
+        "Z_MIN": 10.0,
+        "Z_MAX": 110.0,
+        "MODULO_MAX": 60.0
+    },
+    "parametros_comparacion": {
+        "piezas": {
+            "Pieza 1": "D:/Archivos/Facultad/Proyecto Final/C\u00f3digo/Patron-A-50.csv",
+            "Pieza 2": "D:/Archivos/Facultad/Proyecto Final/C\u00f3digo/Patron-B-50.csv",
+            "Pieza 3": "D:/Archivos/Facultad/Proyecto Final/C\u00f3digo/Patron-B-50.csv"
+        },
+        "umbral_identificacion": 80.0
+    },
+    "configuracion_escaneo": {
+        "num_muestras": 50,
+        "tiempo_rotacion": 40.0
+    }
+}
