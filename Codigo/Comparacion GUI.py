@@ -11,8 +11,12 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 import threading
 
-# Archivo de configuración
-CONFIG_FILE = "Parametros_Configuracion.json"
+# Archivo de configuración unificado
+CONFIG_FILE = "Configuracion.json"
+
+# Directorio para escaneos
+SCANS_DIR = Path.cwd() / 'Escaneos'
+SCANS_DIR.mkdir(exist_ok=True)
 
 # Parámetros del algoritmo de alineación
 angulo_paso = 45                # Ángulo grueso (grados)
@@ -20,30 +24,87 @@ iteraciones = 5                 # Número de iteraciones del refinamiento
 num_muestras = 30000            # Número máximo de puntos a muestrear
 
 # Umbral de Chamfer (fracción de la diagonal) para CÁLCULO de similitud
-umbral_chamfer_frac = 0.1
+umbral_chamfer_frac = 0.25
 
 # Multiplicador para la sensibilidad del GRÁFICO
 FACTOR_VISUAL_GRADIENTE = 10.0
 
-# Configuración global (se carga desde JSON)
+# Variable global para configuración
 CONFIG = {
     "piezas": {},
     "umbral_identificacion": 85.0,
-    "archivo_escaneo": "Escaneo.csv"
-} 
+    "archivo_escaneo": ""
+}
+
+
+def load_config():
+    """Carga la configuración de comparación desde el archivo unificado."""
+    global CONFIG
+    try:
+        if not os.path.exists(CONFIG_FILE):
+            print(f"Archivo de configuración no encontrado: {CONFIG_FILE}")
+            return False
+            
+        with open(CONFIG_FILE, 'r') as f:
+            config = json.load(f)
+        
+        comparacion = config.get('parametros_comparacion', {})
+        CONFIG = {
+            "piezas": comparacion.get("piezas", {}),
+            "umbral_identificacion": comparacion.get("umbral_identificacion", 85.0),
+            "archivo_escaneo": str(SCANS_DIR / "Escaneo.csv")
+        }
+        print(f"Configuración cargada: {CONFIG}")
+        return True
+    except Exception as e:
+        print(f"Error cargando configuración: {e}")
+        return False
+
+
+def save_config():
+    """Guarda la configuración de comparación en el archivo unificado."""
+    global CONFIG
+    try:
+        # Cargar configuración completa existente
+        if not os.path.exists(CONFIG_FILE):
+            print(f"Archivo de configuración no existe: {CONFIG_FILE}")
+            return False
+            
+        with open(CONFIG_FILE, 'r') as f:
+            config = json.load(f)
+        
+        # Actualizar solo la sección parametros_comparacion
+        config['parametros_comparacion'] = {
+            "piezas": CONFIG.get("piezas", {}),
+            "umbral_identificacion": CONFIG.get("umbral_identificacion", 85.0)
+        }
+        
+        # Guardar de vuelta
+        with open(CONFIG_FILE, 'w') as f:
+            json.dump(config, f, indent=4)
+        print(f"Configuración guardada exitosamente")
+        return True
+    except Exception as e:
+        print(f"Error guardando configuración: {e}")
+        return False
+
+
+
+# Cargar configuración al iniciar
+load_config()
 
 
 # =============================================================================
 # FUNCIONES DE UTILIDAD
 # =============================================================================
 
+# Centra la nube de puntos
 def center_cloud(points):
-    """(NUEVA FUNCIÓN) Centra una nube de puntos restando su media (centroide)."""
     if points.size == 0:
         return points, np.array([0,0,0])
-    # Calcula el centroide (la media de X, Y, Z)
-    centroid = np.mean(points, axis=0)
-    # Resta el centroide a todos los puntos
+    # Calcula el centroide solo en X e Y
+    centroid = np.array([np.mean(points[:, 0]), np.mean(points[:, 1]), 0])
+    # Resta el centroide a todos los puntos (pero Z permanece igual)
     return points - centroid, centroid
 
 def rotate_z(points, angle_deg):
@@ -85,8 +146,8 @@ def get_similarity_percent(patron, distancia_chamfer):
 
     return similarity_percent
 
+# Rota la pieza para encontrar la mejor alineación
 def find_best_alignment(patron, comparada):
-    # ... (Lógica de alineación, sin cambios) ...
     paso = int(angulo_paso) if angulo_paso >= 1 else 5
     lista_angulos = np.arange(0, 360, paso)
 
@@ -122,8 +183,8 @@ def find_best_alignment(patron, comparada):
 
     return float(mejor_angulo % 360), mejor_distancia, mejores_distancias_por_punto, mejor_nube_rotada
 
+# Grafica las nubes de puntos
 def plot_clouds(pattern_points, compared_points, distances):
-    """(MODIFICADO) Grafica la nube patrón y la alineada (con colores por similitud)."""
     plotter = pv.Plotter()
     # Patrón (negro)
     plotter.add_mesh(pv.PolyData(pattern_points), color='black', opacity=0.5, point_size=5, render_points_as_spheres=True)
@@ -223,37 +284,42 @@ def _run_comparison(file_patron, puntos_comparada_centrada):
 def cargar_configuracion():
     """Carga la configuración desde el archivo JSON."""
     global CONFIG
-    if os.path.exists(CONFIG_FILE):
-        try:
-            with open(CONFIG_FILE, 'r') as f:
-                CONFIG = json.load(f)
-            return True
-        except:
-            return False
-    return False
+    load_config()  # Usar la función load_config() que ya está optimizada
+    return os.path.exists(CONFIG_FILE)
 
 def guardar_configuracion():
     """Guarda la configuración en un archivo JSON."""
-    try:
-        with open(CONFIG_FILE, 'w') as f:
-            json.dump(CONFIG, f, indent=4)
-        return True
-    except:
-        return False
+    save_config()  # Usar la función save_config() que ya está optimizada
 
-def ejecutar_comparacion(archivo_escaneo):
+def ejecutar_comparacion(archivo_escaneo, callback=None):
     """Ejecuta el proceso de comparación completo."""
     try:
+        def mostrar_mensaje(msg):
+            print(msg)
+            if callback:
+                callback(msg)
+        
+        mostrar_mensaje("1. Cargando archivo de escaneo...")
         puntos_comparada_original = _load_csv_points(archivo_escaneo)
+        mostrar_mensaje(f"   ✓ Puntos cargados: {len(puntos_comparada_original)}")
+        
+        mostrar_mensaje("2. Centrando nube de puntos...")
         puntos_comparada_centrada, _ = center_cloud(puntos_comparada_original)
+        mostrar_mensaje("   ✓ Nube centrada")
         
         if not np.all(np.isfinite(puntos_comparada_centrada)):
             return None, "Error: valores NaN/Infinitos en escaneado"
         
+        mostrar_mensaje("3. Ejecutando comparaciones...")
         # Ejecutar comparaciones
         comparaciones = []
-        for nombre, path_patron in CONFIG["piezas"].items():
+        piezas_list = list(CONFIG["piezas"].items())
+        mostrar_mensaje(f"   Comparando con {len(piezas_list)} piezas patrón")
+        
+        for idx, (nombre, path_patron) in enumerate(piezas_list):
+            mostrar_mensaje(f"   - Comparando con {nombre}...")
             sim, pat, comp, dists = _run_comparison(path_patron, puntos_comparada_centrada)
+            mostrar_mensaje(f"     ✓ Similitud: {sim:.2f}%")
             comparaciones.append({
                 "nombre": nombre,
                 "similitud": sim,
@@ -262,8 +328,12 @@ def ejecutar_comparacion(archivo_escaneo):
                 "dists": dists
             })
         
+        mostrar_mensaje("4. Seleccionando mejor coincidencia...")
         mejor_match = max(comparaciones, key=lambda x: x["similitud"])
         umbral = CONFIG.get("umbral_identificacion", 75.0)
+        
+        mostrar_mensaje(f"5. ✓ Pieza: {mejor_match['nombre']} ({mejor_match['similitud']:.2f}%)")
+        mostrar_mensaje("Preparando resultado...")
         
         return {
             "aprobada": mejor_match["similitud"] >= umbral,
@@ -277,6 +347,9 @@ def ejecutar_comparacion(archivo_escaneo):
         }, None
         
     except Exception as e:
+        print(f"ERROR en ejecutar_comparacion: {e}")
+        import traceback
+        traceback.print_exc()
         return None, f"Error: {str(e)}"
 
 
@@ -450,7 +523,7 @@ class AppComparacion:
         
         # Recomendación
         label_recom = tk.Label(frame_umbral,
-                              text="Recomendado: 75% (estricto: 85%, flexible: 65%)",
+                              text="Recomendado: 85% (Estricto: 90%, Flexible: 80%)",
                               font=("Segoe UI", 9, "italic"), bg='#2d2d44', fg='#808080')
         label_recom.pack(anchor='w', pady=5)
         
@@ -552,29 +625,62 @@ class AppComparacion:
             self.pantalla_principal()
             return
         
-        # Etiqueta de procesamiento
-        label_procesando = tk.Label(self.root, text="Procesando...",
-                                   font=("Segoe UI", 16), bg='#1a1a2e', fg='#00d966')
+        # Pantalla de procesamiento mejorada
+        frame_procesamiento = tk.Frame(self.root, bg='#1a1a2e')
+        frame_procesamiento.pack(fill='both', expand=True)
+        
+        # Espaciador superior
+        tk.Frame(frame_procesamiento, bg='#1a1a2e').pack(fill='both', expand=True)
+        
+        # Frame con borde y contenido
+        frame_interior = tk.Frame(frame_procesamiento, bg='#2d2d44', relief='raised', bd=3)
+        frame_interior.pack(expand=True, padx=40, pady=40, ipadx=30, ipady=30)
+        
+        # Texto de procesamiento
+        label_procesando = tk.Label(frame_interior, text="⏳ PROCESANDO...",
+                                   font=("Segoe UI", 32, "bold"), 
+                                   bg='#2d2d44', fg='#00d966')
         label_procesando.pack(pady=20)
+        
+        # Subtexto dinámico (label_progreso)
+        self.label_progreso = tk.Label(frame_interior, text="Analizando nube de puntos",
+                                       font=("Segoe UI", 12), 
+                                       bg='#2d2d44', fg='#b0b0b0',
+                                       wraplength=400, justify='left')
+        self.label_progreso.pack(pady=10)
+        
+        # Espaciador inferior
+        tk.Frame(frame_procesamiento, bg='#1a1a2e').pack(fill='both', expand=True)
+        
         self.root.update()
         
         # Ejecutar comparación en hilo separado
         thread = threading.Thread(target=self._ejecutar_comparacion_thread, 
-                                 args=(archivo_escaneo, label_procesando))
+                                 args=(archivo_escaneo,),
+                                 daemon=False)
         thread.start()
     
-    def _ejecutar_comparacion_thread(self, archivo_escaneo, label_procesando):
+    def _ejecutar_comparacion_thread(self, archivo_escaneo):
         """Ejecuta la comparación en un hilo separado."""
         try:
-            resultado, error = ejecutar_comparacion(archivo_escaneo)
+            self._actualizar_progreso("Cargando archivo de escaneo...")
+            resultado, error = ejecutar_comparacion(archivo_escaneo, self._actualizar_progreso)
             
             if error:
                 self.root.after(0, lambda: self._mostrar_error_comparacion(error))
             else:
-                self.root.after(0, lambda: self._pantalla_resultados(resultado, label_procesando))
+                self.root.after(0, lambda: self._pantalla_resultados(resultado))
         
         except Exception as e:
+            print(f"Excepción en hilo de comparación: {e}")
+            import traceback
+            traceback.print_exc()
             self.root.after(0, lambda: self._mostrar_error_comparacion(str(e)))
+    
+    def _actualizar_progreso(self, mensaje):
+        """Actualiza el label de progreso en la GUI."""
+        if hasattr(self, 'label_progreso'):
+            self.root.after(0, lambda: self.label_progreso.config(text=mensaje))
     
     def _mostrar_error_comparacion(self, error):
         """Muestra error de comparación."""
@@ -582,9 +688,10 @@ class AppComparacion:
         messagebox.showerror("Error", f"Error en comparación: {error}")
         self.pantalla_principal()
     
-    def _pantalla_resultados(self, resultado, label_procesando):
+    def _pantalla_resultados(self, resultado):
         """Pantalla con resultados de la comparación."""
-        label_procesando.pack_forget()
+        # Limpiar ventana
+        self.limpiar_ventana()
         
         # Frame superior con resultado (Aprobada/Desaprobada)
         color_fondo = '#00d966' if resultado["aprobada"] else '#f44336'
@@ -615,13 +722,32 @@ class AppComparacion:
                                   font=("Segoe UI", 14), bg='#1a1a2e', fg='#b0b0b0')
         label_similitud.pack(anchor='w', pady=5)
         
-        # Frame para gráfico 3D
-        frame_grafico = tk.Frame(self.root, bg='#2d2d44', height=300, relief='sunken', bd=1)
-        frame_grafico.pack(fill='both', expand=True, padx=20, pady=10)
+        # Aviso de gráfico en nueva ventana
+        frame_aviso = tk.Frame(self.root, bg='#3b3b5c', relief='solid', bd=1, padx=15, pady=15)
+        frame_aviso.pack(fill='x', padx=20, pady=15)
+        
+        label_aviso_icon = tk.Label(frame_aviso, text="ℹ️", font=("Segoe UI", 20),
+                                   bg='#3b3b5c', fg='#3b24c8')
+        label_aviso_icon.pack(side='left', padx=10)
+        
+        frame_texto_aviso = tk.Frame(frame_aviso, bg='#3b3b5c')
+        frame_texto_aviso.pack(side='left', fill='both', expand=True)
+        
+        label_aviso_titulo = tk.Label(frame_texto_aviso, text="Gráfico 3D Interactivo",
+                                     font=("Segoe UI", 12, "bold"),
+                                     bg='#3b3b5c', fg='white', justify='left')
+        label_aviso_titulo.pack(anchor='w')
+        
+        label_aviso_texto = tk.Label(frame_texto_aviso, 
+                                    text="Se abrirá una ventana externa con el gráfico 3D interactivo.\nPuedes rotar, zoom y explorar la comparación. Cierra la ventana para continuar.",
+                                    font=("Segoe UI", 10),
+                                    bg='#3b3b5c', fg='#b0b0b0', justify='left')
+        label_aviso_texto.pack(anchor='w', pady=5)
         
         # Mostrar gráfico en hilo separado
         thread_grafico = threading.Thread(target=self._generar_grafico,
-                                        args=(resultado, frame_grafico))
+                                        args=(resultado, None),
+                                        daemon=True)
         thread_grafico.start()
         
         # Botones de acción
@@ -638,118 +764,49 @@ class AppComparacion:
         btn_nueva.pack(side='left', padx=10)
     
     def _generar_grafico(self, resultado, frame_grafico):
-        """Genera el gráfico 3D interactivo integrado en la ventana."""
+        """Genera el gráfico 3D interactivo en una ventana separada."""
         try:
             if resultado["patron"] is not None and resultado["comparada"] is not None:
-                # Usar pyvista con plotly para interactividad (requiere plotly)
-                # Si no está disponible, usar screenshot
+                # Crear el plotter
+                plotter = pv.Plotter(off_screen=False, window_size=(800, 600),
+                                    notebook=False)
                 
-                try:
-                    # Intentar usar Jupyter backend que es más portable
-                    import pyvista
-                    
-                    # Crear el plotter
-                    plotter = pv.Plotter(off_screen=False, window_size=(600, 500),
-                                        notebook=False)
-                    
-                    # Patrón (negro, semi-transparente)
-                    plotter.add_mesh(pv.PolyData(resultado["patron"]), 
-                                   color='black', opacity=0.4, point_size=8, 
-                                   render_points_as_spheres=True, label='Patrón')
-                    
-                    # Nube escaneada (coloreada)
-                    compared_cloud_pv = pv.PolyData(resultado["comparada"])
-                    
-                    # Cálculo del coloreado
-                    min_coords = np.min(resultado["patron"], axis=0)
-                    max_coords = np.max(resultado["patron"], axis=0)
-                    diagonal = np.linalg.norm(max_coords - min_coords)
-                    threshold_value = max(1e-9, umbral_chamfer_frac * diagonal)
-                    factor_seguro = max(1e-9, FACTOR_VISUAL_GRADIENTE)
-                    threshold_visual = threshold_value / factor_seguro
-                    
-                    similitud_por_punto = np.exp(- (np.asarray(resultado["dists"]) / threshold_visual))
-                    compared_cloud_pv['similitud'] = similitud_por_punto
-                    
-                    plotter.add_mesh(compared_cloud_pv, scalars='similitud', cmap='RdYlBu',
-                                   point_size=10, render_points_as_spheres=True, 
-                                   clim=[0, 1], label='Escaneada')
-                    
-                    plotter.add_scalar_bar(title='Similitud Local', vertical=True)
-                    plotter.add_legend()
-                    plotter.reset_camera()
-                    
-                    # Mostrar en ventana interactiva
-                    plotter.show()
-                    
-                except Exception as e:
-                    print(f"No se pudo crear visualización interactiva: {e}")
-                    print("Usando visualización estática...")
-                    self._generar_grafico_estatico(resultado, frame_grafico)
+                # Patrón (negro, semi-transparente)
+                plotter.add_mesh(pv.PolyData(resultado["patron"]), 
+                               color='black', opacity=0.4, point_size=8, 
+                               render_points_as_spheres=True, label='Patrón')
+                
+                # Nube escaneada (coloreada)
+                compared_cloud_pv = pv.PolyData(resultado["comparada"])
+                
+                # Cálculo del coloreado
+                min_coords = np.min(resultado["patron"], axis=0)
+                max_coords = np.max(resultado["patron"], axis=0)
+                diagonal = np.linalg.norm(max_coords - min_coords)
+                threshold_value = max(1e-9, umbral_chamfer_frac * diagonal)
+                factor_seguro = max(1e-9, FACTOR_VISUAL_GRADIENTE)
+                threshold_visual = threshold_value / factor_seguro
+                
+                similitud_por_punto = np.exp(- (np.asarray(resultado["dists"]) / threshold_visual))
+                compared_cloud_pv['similitud'] = similitud_por_punto
+                
+                plotter.add_mesh(compared_cloud_pv, scalars='similitud', cmap='RdYlBu',
+                               point_size=10, render_points_as_spheres=True, 
+                               clim=[0, 1], label='Escaneada')
+                
+                plotter.add_scalar_bar(title='Similitud Local', vertical=True)
+                plotter.add_legend()
+                plotter.reset_camera()
+                
+                # Mostrar en ventana interactiva
+                plotter.show()
         
         except Exception as e:
             print(f"Error al generar gráfico: {e}")
-            label_error = tk.Label(frame_grafico, text="Error al generar gráfico 3D",
-                                  font=("Arial", 12), bg='#ffcccc', fg='#cc0000')
-            label_error.pack(fill='both', expand=True)
-    
-    def _generar_grafico_estatico(self, resultado, frame_grafico):
-        """Genera gráfico estático como respaldo."""
-        try:
-            # Crear figura estática
-            plotter = pv.Plotter(off_screen=True, window_size=(600, 500))
-            
-            # Patrón (negro)
-            plotter.add_mesh(pv.PolyData(resultado["patron"]), 
-                           color='black', opacity=0.5, point_size=5, 
-                           render_points_as_spheres=True)
-            
-            # Nube escaneada (coloreada)
-            compared_cloud_pv = pv.PolyData(resultado["comparada"])
-            
-            min_coords = np.min(resultado["patron"], axis=0)
-            max_coords = np.max(resultado["patron"], axis=0)
-            diagonal = np.linalg.norm(max_coords - min_coords)
-            threshold_value = max(1e-9, umbral_chamfer_frac * diagonal)
-            factor_seguro = max(1e-9, FACTOR_VISUAL_GRADIENTE)
-            threshold_visual = threshold_value / factor_seguro
-            
-            similitud_por_punto = np.exp(- (np.asarray(resultado["dists"]) / threshold_visual))
-            compared_cloud_pv['similitud'] = similitud_por_punto
-            
-            plotter.add_mesh(compared_cloud_pv, scalars='similitud', cmap='RdYlBu',
-                           point_size=6, render_points_as_spheres=True, clim=[0, 1])
-            
-            # Guardar a imagen
-            plotter.camera_position = 'xy'
-            screenshot = plotter.screenshot(transparent_background=False)
-            
-            # Mostrar imagen en tkinter
-            from PIL import Image, ImageTk
-            
-            img = Image.fromarray(screenshot)
-            img_tk = ImageTk.PhotoImage(img)
-            
-            label_img = tk.Label(frame_grafico, image=img_tk, bg='white')
-            label_img.image = img_tk  # Mantener referencia
-            label_img.pack(fill='both', expand=True)
-            
-            label_nota = tk.Label(frame_grafico, 
-                                 text="Gráfico estático (vista XY)",
-                                 font=("Arial", 9), bg='white', fg='#999')
-            label_nota.pack(pady=5)
-        
-        except Exception as e:
-            print(f"Error al generar gráfico estático: {e}")
+            messagebox.showerror("Error", f"Error al generar gráfico 3D: {e}")
 
-
-# =============================================================================
-# PROGRAMA PRINCIPAL
-# =============================================================================
 
 if __name__ == "__main__":
-    print("🤖 Iniciando interfaz gráfica del sistema de identificación de piezas.")
-    
     root = tk.Tk()
     app = AppComparacion(root)
     root.mainloop()
