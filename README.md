@@ -480,18 +480,7 @@ Imágenes detalladas del prototipo y sus componentes en funcionamiento.
   <img src="https://github.com/user-attachments/assets/f61ff91f-1e12-4905-afd6-db76f77e392e" width="45%"/>
 </p>
 
-<h1 align="center">Estructura del Repositorio</h1>
-
-A continuación se detallan las carpetas que estructuran este repositorio:
-
-* **CODIGO:** Contiene el código fuente utilizado (Python/Arduino).
-* **MULTIMEDIA:** Imágenes y videos del desarrollo y funcionamiento.
-* **PLANOS:** Esquemáticos y diagramas de los sistemas implementados.
-* **DATASHEET:** Hojas de datos y especificaciones de componentes.
-* **INFORMES:** Documentación, Gantt, informes PDF y manuales.
-
 ---
-
 
 <p align="center">
   <img src="https://github.com/JonatanBogadoUNLZ/PPS-Jonatan-Bogado/blob/9952aac097aca83a1aadfc26679fc7ec57369d82/LOGO%20AZUL%20HORIZONTAL%20-%20fondo%20transparente.png" width="45%"/>
