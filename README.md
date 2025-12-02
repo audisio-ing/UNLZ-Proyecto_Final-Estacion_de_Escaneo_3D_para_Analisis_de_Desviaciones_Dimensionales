@@ -215,6 +215,7 @@ A continuación se detalla en listas las diferentes tecnologías y recursos util
 | **OBS Studio** | Utilizado como intermediario, permite ajustar controles de la cámara no posibles en python. |
 | **CL-Eye Test** | Software utilizado para la conexión con la Cámara y drivers específicos. |
 | **Blender** | Renders del prototipo utilizados para visualización. |
+| **Proteus** | Diseño de circuitos electrónicos. |
 
 ## Librerias de Python
 
