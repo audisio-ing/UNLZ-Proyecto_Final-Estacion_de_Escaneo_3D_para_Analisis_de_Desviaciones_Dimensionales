@@ -455,6 +455,7 @@ A la hora de realizar el proyecto, nos encontramos con varias problematicas, las
   + Implementacion de Anillo colector para evitar el enriedo de cables
   + Utilizacion de Poleas metalicas
   + Reemplazo de varilla roscada por una varilla mecanizada que se adapte mejor a las necesidades del mecanismo
+  + Implementar un encencoder en el motor paso a paso que lo controla, deshaciendonos del uso del sensor de efecto hall.
 
 **Escaneo**
   
