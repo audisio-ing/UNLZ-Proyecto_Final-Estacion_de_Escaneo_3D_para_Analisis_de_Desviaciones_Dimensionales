@@ -41,7 +41,6 @@
 - **11.0** [Errores Cometidos y Lecciones Aprendidas](#errores-cometidos-y-lecciones-aprendidas)
 - **12.0** [Futuras Mejoras y Propuestas](#futuras-mejoras-y-propuestas)
 - **13.0** [Galería del Proyecto](#galería-del-proyecto)
-- **14.0** [Estructura del Repositorio](#estructura-del-repositorio)
 
 <br>
 <h1 align="center">Introducción</h1>
