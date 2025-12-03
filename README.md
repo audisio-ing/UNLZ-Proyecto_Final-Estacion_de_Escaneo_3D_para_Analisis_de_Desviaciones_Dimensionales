@@ -349,7 +349,7 @@ Al presionar el botón <b>"Comenzar escaneo"</b> Python informará a Arduino el 
 Cuando la pieza se encuentre en posición y comience el escaneo, aparecerá una barra de carga que indicará la muestra actual, muestras restantes y un tiempo estimado de finalización.
 
 <p align="center">
-  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Setup%20Cámara.png" alt="GUI Durante el escaneo" width="500"/>
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/UI%20escaneando.jpg" alt="GUI Comparación" width="45%"/>
   <br>
   <em>GUI Durante el escaneo</em>
 </p>
@@ -357,8 +357,8 @@ Cuando la pieza se encuentre en posición y comience el escaneo, aparecerá una 
 Una vez finalizado el escaneo y habiendo expulsado la pieza, la interfaz cambiará haciendo saber al usuario que el escaneo ha finalizado y mostrando una ventana que le permitirá visualizar la nube de puntos obtenida.
 
 <p align="center">
-  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Escaneo.png" alt="GUI Escaneo Finalizado" width="45%"/>
-  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Configuración%20Escaneo.png" alt="GUI Nube de puntos obtenida" width="45%"/>
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Nube%20de%20puntos%20de%20escaneo.jpg" alt="GUI Escaneo Finalizado" width="45%"/>
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/UI%20escaneo%20completado.jpg" alt="GUI Nube de puntos obtenida" width="45%"/>
   <br>
   <em>GUI Escaneo finalizado y nube de puntos obtenida</em>
 </p>
@@ -377,6 +377,8 @@ Ahora que ya obtuvimos una nube de puntos a escala de la pieza, procedemos a la 
 Previo a realizar la comparación es necesario dirigirse a la pestaña de ajustes, donde el usuario deberá seleccionar la ruta de destino de los 3 escaneos que usará como patrones en la comparación, y tambien ingresar un porcentaje de similitud mínimo que indicará si la pieza es aceptada o rechazada.
 
 Ahora sí procedemos con la comparación,
+<p align="center">
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/UI%20escaneo%20aprobado.jpg" alt="GUI Comparación" width="45%"/>
 
 <br>
 <h1 align="center">Escaneos Obtenidos</h1>
