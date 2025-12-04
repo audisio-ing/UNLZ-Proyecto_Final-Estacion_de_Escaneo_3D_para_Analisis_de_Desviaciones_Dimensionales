@@ -220,14 +220,14 @@ A continuación se detalla en listas las diferentes tecnologías y recursos util
 
 | Librería | Descripción |
 | :--- | :--- |
-| **OpenCV** | Manejo de Cámara, captura de frames y detección del Láser |
-| **NumPy** | Procesamiento matemático de matrices y la nube de puntos |
-| **Pillow** | Procesamiento y manipulación básica de imágenes |
-| **PyVista** | Visualización 3D interactiva y renderizado de la nube de puntos |
-| **SciPy** | Algoritmos científicos para cálculos complejos y filtrado |
-| **PySerial** | Comunicación serial para el control del Arduino |
-| **PyInstaller** | Empaquetado del programa en un archivo ejecutable |
-| **Tkinter** | Diseño de interfaz visual de usuario (GUI) |
+| **OpenCV** | Manejo de Cámara, captura de frames y detección del Láser. |
+| **NumPy** | Procesamiento matemático de matrices y la nube de puntos. |
+| **Pillow** | Procesamiento y manipulación básica de imágenes. |
+| **PyVista** | Visualización 3D interactiva y renderizado de la nube de puntos. |
+| **SciPy** | Algoritmos científicos para cálculos complejos y filtrado, Chamfer Distance. |
+| **PySerial** | Comunicación serial para el control del Arduino. |
+| **PyInstaller** | Empaquetado del programa en un archivo ejecutable. |
+| **Tkinter** | Diseño de interfaz visual de usuario (GUI). |
 
 ## Hardware y Electrónica
 
@@ -417,7 +417,11 @@ A continuación se muestran los resultados obtenidos del escaneo de las diferent
 <br>
 <h1 align="center">Algoritmo de Comparación</h1>
 
-Para lograr una comparación
+Para lograr una comparación efectiva, optamos por la métrica <i>"Chamfer distance"</i> tambien conocida como <i>Distancia de Chaflán</i>. El cuál se utiliza para evaluar la similitud entre dos nubes de puntos. Esta se define como la suma de la distancia de cada punto de una <b>Nube A</b> con el punto más cercano de una <b>Nube B</b>, más la distancia de cada punto de la <b>Nube B</b> con el punto más cercano de la <b>Nube A</b>.
+
+Para llevarla a cabo, primero se obtiene una media de ambas nubes de puntos para lograr centrarlas en el espacio en el eje X e Y. Luego se evalua la Distancia Chamfer utilizando el elemento <i>KDTree</i> de la libería <i>SciPy</i>. Este proceso se repite mientras la Nube de puntos comparada es rotada 45° en el eje Z utilizando una matríz de transformación. En el ángulo donde la distancia chamfer es la menor (Es decir la similitud entre ambas nubes es mayor) se vuelve a iterar la rotación, esta vez con un ángulo menor (45° / 2). Este proceso se repite 5 veces iterando con ángulos cada vez menores hasta lograr hallar la mayor similitud de la pieza.
+
+Finalmente, la Distancia Chamfer se normaliza respecto a la diagonal del límite que contiene ambas nubes, convirtiéndose en un porcentaje de similitud mediante la función exponencial: <b>Similitud = e<sup>−(d/umbral)</sup> × 100</b>, donde <b>d</b> es la distancia Chamfer y el umbral se define como un porcentaje de la diagonal. Esto permite obtener valores entre 0% (nubes completamente diferentes) y 100% (nubes idénticas), de manera independiente a la escala del objeto.
 
 <br>
 <h1 align="center">Errores Cometidos y Lecciones Aprendidas</h1>
