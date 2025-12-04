@@ -498,6 +498,9 @@ A la hora de realizar el proyecto, nos encontramos con varias problematicas, las
   + Utilizar una cámara y sensor de mejor calidad, para una mayor precisión y resolución.
   + Trabajar con otro sistema de calibración que sea más preciso y genérico.
 
+<h1 align="center">Conclusiones</h1>
+En conclusión, el desarrollo de este prototipo funcional ha permitido validar la arquitectura del sistema con una inversión inicial reducida. Si bien esta fase experimental utiliza componentes económicos que representan solo una fracción del costo ideal, los resultados obtenidos en cuanto a repetibilidad y precisión son notables. Esto confirma la viabilidad técnica del proyecto y sienta las bases sólidas para el desarrollo de la versión final que, mediante la integración de componentes de grado profesional, potenciará aún más las capacidades metrológicas del sistema.
+
 <h1 align="center">Galería del Proyecto</h1>
 
 Imágenes detalladas del prototipo y sus componentes en funcionamiento.
