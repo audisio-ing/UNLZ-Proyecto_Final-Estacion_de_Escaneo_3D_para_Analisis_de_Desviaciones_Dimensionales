@@ -118,7 +118,7 @@ Procederemos a explicar cada paso del escaneo acompañado de animaciones didáct
 
 <p align="center">
   <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Nube%20de%20puntos%20de%20escaneo.jpg" alt="GUI Escaneo Finalizado" width="45%"/>
-  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/UI%20escaneo%20completado.jpg" alt="GUI Nube de puntos obtenida" width="45%"/>
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Escaneo%20Completado.jpg" alt="GUI Nube de puntos obtenida" width="45%"/>
   <br>
   <em>GUI Escaneo finalizado y nube de puntos obtenida</em>
 </p>
@@ -365,7 +365,7 @@ Una vez finalizado el escaneo y habiendo expulsado la pieza, la interfaz cambiar
 
 <p align="center">
   <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Nube%20de%20puntos%20de%20escaneo.jpg" alt="GUI Escaneo Finalizado" width="45%"/>
-  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/UI%20escaneo%20completado.jpg" alt="GUI Nube de puntos obtenida" width="45%"/>
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Escaneo%20Completado.jpg" alt="GUI Nube de puntos obtenida" width="45%"/>
   <br>
   <em>GUI Escaneo finalizado y nube de puntos obtenida</em>
 </p>
@@ -394,7 +394,7 @@ Ahora sí procedemos con la comparación, la interfaz nos mostrará una ventana 
 Una vez finalizado, nos aparecerá una pantalla indicando si la pieza se encuentra <b>Aprobada</b> ( el porcentaje de similitud es mayor al umbral seleccionado) o <b>Desaprobada</b> ( el porcentaje de similitud es menor al umbral seleccionado). 
 
 <p align="center">
-  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/UI%20escaneo%20aprobado.jpg" alt="GUI Comparación Aprobado" width="45%"/>
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Escaneo%20Aprobado.jpg" alt="GUI Comparación Aprobado" width="45%"/>
   <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Escaneo%20Desaprobado.png" alt="GUI Comparación Desaprobado" width="45%"/>
   <br>
   <em>GUI Comparación Aprobada y Desaprobada</em>
