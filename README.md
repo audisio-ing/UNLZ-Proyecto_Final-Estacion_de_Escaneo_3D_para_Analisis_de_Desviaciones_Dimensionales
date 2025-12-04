@@ -356,7 +356,7 @@ Una vez configurado los parámetros iniciales se procede a la segunda etapa, el 
 Al presionar el botón <b>"Comenzar escaneo"</b> Python informará a Arduino el inicio de la secuencia, durante el proceso de escaneo el usuario observará una barra de estado indicando la etapa actual del escaneo junto con una transmisión en vivo de la cámara. Cuando la pieza se encuentre en posición y comience el escaneo, aparecerá una barra de carga que indicará la muestra actual, muestras restantes y un tiempo estimado de finalización.
 
 <p align="center">
-  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/UI%20escaneando.jpg" alt="GUI Comparación" width="45%"/>
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Escaneando.jpg" alt="GUI Comparación" width="45%"/>
   <br>
   <em>GUI Durante el escaneo</em>
 </p>
