@@ -338,15 +338,7 @@ Una vez configurado los parámetros iniciales se procede a la segunda etapa, el 
   <em>GUI Escaneo y Configuración de muestras</em>
 </p>
 
-Al presionar el botón <b>"Comenzar escaneo"</b> Python informará a Arduino el inicio de la secuencia, durante el proceso de escaneo el usuario observará una barra de estado indicando la etapa actual del escaneo junto con una transmisión en vivo de la cámara.
-
-<p align="center">
-  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Setup%20Cámara.png" alt="GUI Previa al escaneo" width="500"/>
-  <br>
-  <em>GUI Previa al escaneo</em>
-</p>
-
-Cuando la pieza se encuentre en posición y comience el escaneo, aparecerá una barra de carga que indicará la muestra actual, muestras restantes y un tiempo estimado de finalización.
+Al presionar el botón <b>"Comenzar escaneo"</b> Python informará a Arduino el inicio de la secuencia, durante el proceso de escaneo el usuario observará una barra de estado indicando la etapa actual del escaneo junto con una transmisión en vivo de la cámara. Cuando la pieza se encuentre en posición y comience el escaneo, aparecerá una barra de carga que indicará la muestra actual, muestras restantes y un tiempo estimado de finalización.
 
 <p align="center">
   <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/UI%20escaneando.jpg" alt="GUI Comparación" width="45%"/>
@@ -376,9 +368,30 @@ Ahora que ya obtuvimos una nube de puntos a escala de la pieza, procedemos a la 
 
 Previo a realizar la comparación es necesario dirigirse a la pestaña de ajustes, donde el usuario deberá seleccionar la ruta de destino de los 3 escaneos que usará como patrones en la comparación, y tambien ingresar un porcentaje de similitud mínimo que indicará si la pieza es aceptada o rechazada.
 
-Ahora sí procedemos con la comparación,
+Ahora sí procedemos con la comparación, la interfaz nos mostrará una ventana donde podremos elegir el archivo del escaneo dentro de nuestra PC, una vez seleccionada comenzará el proceso de la comparación.
+
 <p align="center">
-  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/UI%20escaneo%20aprobado.jpg" alt="GUI Comparación" width="45%"/>
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Comparación%20Proceso.png" alt="GUI Comparación Proceso" width="45%"/>
+  <br>
+  <em>GUI Proceso de Comparación</em>
+</p>
+
+Una vez finalizado, nos aparecerá una pantalla indicando si la pieza se encuentra <b>Aprobada</b> ( el porcentaje de similitud es mayor al umbral seleccionado) o <b>Desaprobada</b> ( el porcentaje de similitud es menor al umbral seleccionado). 
+
+<p align="center">
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/UI%20escaneo%20aprobado.jpg" alt="GUI Comparación Aprobado" width="45%"/>
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Escaneo%20Desaprobado.png" alt="GUI Comparación Desaprobado" width="45%"/>
+  <br>
+  <em>GUI Comparación Aprobada y Desaprobada</em>
+</p>
+
+También se nos mostrará una ventana aparte conteniendo el modelo Escaneado y el modelo Patrón superpuesto en negro, el color del Escaneado cambiará dependiendo de las zonas donde se encuentren defectos, las cuales se mostrarán en rojo.
+
+<p align="center">
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Resultado%20Comparacion.png" alt="GUI Resultado Comparación" width="45%"/>
+  <br>
+  <em>GUI Resultado Comparación</em>
+</p>
 
 <br>
 <h1 align="center">Escaneos Obtenidos</h1>
@@ -388,7 +401,7 @@ A continuación se muestran los resultados obtenidos del escaneo de las diferent
 <p align="center">
   <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/Escaneos/A.gif" alt="Escaneo A" width="30%"/>
   <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/Escaneos/B.gif" alt="Escaneo B" width="30%"/>
-  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/Escaneos/B.gif" alt="Escaneo C" width="30%"/>
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/Escaneos/C.gif" alt="Escaneo C" width="30%"/>
 </p>
 <p align="center">
   <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/Escaneos/Patron%20A.gif" alt="Patrón A" width="30%"/>
