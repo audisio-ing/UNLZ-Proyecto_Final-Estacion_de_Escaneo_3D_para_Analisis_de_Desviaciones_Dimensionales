@@ -114,8 +114,23 @@ Procederemos a explicar cada paso del escaneo acompañado de animaciones didáct
   <em>Se expulsa la pieza</em>
 </p>
 
-7.  **Procesamiento:** Se obtiene una nube de puntos representativa de las dimensiones del objeto.
-8.  **Análisis:** Se realizan comparaciones con el modelo patrón para determinar fallas o deformaciones.
+6.  **Procesamiento:** Se obtiene una nube de puntos representativa de las dimensiones del objeto.
+
+<p align="center">
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Nube%20de%20puntos%20de%20escaneo.jpg" alt="GUI Escaneo Finalizado" width="45%"/>
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/UI%20escaneo%20completado.jpg" alt="GUI Nube de puntos obtenida" width="45%"/>
+  <br>
+  <em>GUI Escaneo finalizado y nube de puntos obtenida</em>
+</p>
+
+7.  **Análisis:** Se realizan comparaciones con el modelo patrón para determinar fallas o deformaciones.
+
+<p align="center">
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Escaneo%20Aprobado.jpg" alt="GUI Comparación Aprobado" width="45%"/>
+  <img src="https://github.com/audisio-ing/UNLZ-Proyecto_Final-Estacion_de_Escaneo_3D_para_Analisis_de_Desviaciones_Dimensionales/blob/main/Imagenes/GUI/Resultado%20Comparacion.png" alt="GUI Comparación Desaprobado" width="45%"/>
+  <br>
+  <em>GUI Comparación</em>
+</p>
 
 <br>
 <h1 align="center">Marco teórico</h1>
