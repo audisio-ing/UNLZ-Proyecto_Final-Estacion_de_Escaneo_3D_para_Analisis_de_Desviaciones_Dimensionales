@@ -411,7 +411,7 @@ También se nos mostrará una ventana aparte conteniendo el modelo Escaneado y e
 <br>
 <h1 align="center">Escaneos Obtenidos</h1>
 
-A continuación se muestran los resultados obtenidos del escaneo de las diferentes piezas planteadas, todos los escaneos fueron realizados con 100 muestras.
+A continuación se muestran los resultados obtenidos del escaneo de las diferentes piezas planteadas, las piezas patrones fueron escaneadas con 100 muestras, mientras que las piezas distorsionadas fueron escaneadas con 50 muestras.
 
 
 <p align="center">
