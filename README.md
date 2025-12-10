@@ -523,7 +523,7 @@ Imágenes detalladas del prototipo y sus componentes en funcionamiento.
   </tr>
   <tr>
     <td width="50%">
-      <img src="https://github.com/user-attachments/assets/e76e9b4c-4a2d-4bfe-8e72-5bbad9504a32" width="100%" />
+      <img width="642" height="502" alt="Image" src="https://github.com/user-attachments/assets/ca736d87-3f8a-4fd4-94d9-2d96168a2a32" />
     </td>
     <td width="50%">
       <img src="https://github.com/user-attachments/assets/d8d6b97d-05f1-4d76-9329-75389ea69314" width="100%" />
