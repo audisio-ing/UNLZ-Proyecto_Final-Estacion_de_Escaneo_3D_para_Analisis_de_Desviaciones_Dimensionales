@@ -14,8 +14,9 @@ import threading
 # Archivo de configuración unificado
 CONFIG_FILE = "Configuracion.json"
 
-# Directorio para escaneos
-SCANS_DIR = Path.cwd() / 'Escaneos'
+# Directorio para escaneos (carpeta raíz, no Datos)
+# El script se ejecuta desde Datos, así que subimos un nivel con parent
+SCANS_DIR = Path.cwd().parent / 'Escaneos'
 SCANS_DIR.mkdir(exist_ok=True)
 
 # Parámetros del algoritmo de alineación
@@ -27,7 +28,7 @@ num_muestras = 30000            # Número máximo de puntos a muestrear
 umbral_chamfer_frac = 0.25
 
 # Multiplicador para la sensibilidad del GRÁFICO
-FACTOR_VISUAL_GRADIENTE = 10.0
+FACTOR_VISUAL_GRADIENTE = 12.5
 
 # Variable global para configuración
 CONFIG = {
@@ -54,7 +55,6 @@ def load_config():
             "umbral_identificacion": comparacion.get("umbral_identificacion", 85.0),
             "archivo_escaneo": str(SCANS_DIR / "Escaneo.csv")
         }
-        print(f"Configuración cargada: {CONFIG}")
         return True
     except Exception as e:
         print(f"Error cargando configuración: {e}")
@@ -82,7 +82,6 @@ def save_config():
         # Guardar de vuelta
         with open(CONFIG_FILE, 'w') as f:
             json.dump(config, f, indent=4)
-        print(f"Configuración guardada exitosamente")
         return True
     except Exception as e:
         print(f"Error guardando configuración: {e}")
@@ -130,7 +129,7 @@ def get_chamfer_and_dists(patron, comparada):
     return distancia_chamfer, dists_comparada_a_patron
 
 def get_similarity_percent(patron, distancia_chamfer):
-    """Convierte la distancia Chamfer en porcentaje de similitud."""
+    """Convierte la distancia Chamfer en porcentaje de similitud (función lineal)."""
     min_coords = np.min(patron, axis=0)
     max_coords = np.max(patron, axis=0)
     diagonal_vector = max_coords - min_coords
@@ -141,8 +140,8 @@ def get_similarity_percent(patron, distancia_chamfer):
 
     # Umbral para el CÁLCULO
     threshold_value = max(1e-9, umbral_chamfer_frac * norm_factor)
-    similarity = float(np.exp(- (distancia_chamfer / threshold_value)))
-    similarity_percent = max(0.0, min(100.0, similarity * 100.0))
+    # Normalización lineal: 100% cuando distancia=0, 0% cuando distancia=threshold
+    similarity_percent = max(0.0, min(100.0, (1.0 - distancia_chamfer / threshold_value) * 100.0))
 
     return similarity_percent
 
@@ -183,36 +182,6 @@ def find_best_alignment(patron, comparada):
 
     return float(mejor_angulo % 360), mejor_distancia, mejores_distancias_por_punto, mejor_nube_rotada
 
-# Grafica las nubes de puntos
-def plot_clouds(pattern_points, compared_points, distances):
-    plotter = pv.Plotter()
-    # Patrón (negro)
-    plotter.add_mesh(pv.PolyData(pattern_points), color='black', opacity=0.5, point_size=5, render_points_as_spheres=True)
-    compared_cloud_pv = pv.PolyData(compared_points)
-    
-    # Cálculo del factor de escala para el coloreado
-    min_coords = np.min(pattern_points, axis=0)
-    max_coords = np.max(pattern_points, axis=0)
-    diagonal = np.linalg.norm(max_coords - min_coords)
-    
-    # 1. Umbral base (el mismo que se usa para el cálculo de similitud)
-    threshold_value = max(1e-9, umbral_chamfer_frac * diagonal)
-
-    # 2. (NUEVO) Aplicar el multiplicador visual
-    #    Se usa un valor pequeño (1e-9) para evitar división por cero si el factor es 0.
-    factor_seguro = max(1e-9, FACTOR_VISUAL_GRADIENTE)
-    threshold_visual = threshold_value / factor_seguro
-
-    # 3. Similitud por punto para el coloreado (usa el umbral VISUAL)
-    similitud_por_punto = np.exp(- (np.asarray(distances) / threshold_visual))
-    compared_cloud_pv['similitud'] = similitud_por_punto
-
-    # Pieza escaneada (coloreada)
-    plotter.add_mesh(compared_cloud_pv, scalars='similitud', cmap='RdYlBu', point_size=6, render_points_as_spheres=True, clim=[0,1])
-    plotter.add_scalar_bar(title='Similitud (local)', vertical=True)
-    print("Mostrando ventana 3D (cierra la ventana para continuar)")
-    plotter.show()
-
 def downsample_cloud(points, max_points):
     """Reduce el número de puntos de una nube si es demasiado grande."""
     if len(points) > max_points:
@@ -249,7 +218,6 @@ def _run_comparison(file_patron, puntos_comparada_centrada):
         
         # Validar puntos (Patrón y Escaneada)
         if not np.all(np.isfinite(puntos_patron_centrado)) or not np.all(np.isfinite(puntos_comparada_centrada)):
-            print(f"Error en {file_patron} o escaneada: contiene valores no finitos (NaN/Inf).")
             return 0.0, None, None, None
         
         # Downsampling (usando las nubes centradas)
@@ -274,10 +242,8 @@ def _run_comparison(file_patron, puntos_comparada_centrada):
         return similarity, puntos_patron_centrado, final_rotated_centrada, final_dists_original
     
     except FileNotFoundError as fe:
-        print(f"⚠️ Advertencia: {fe}. Saltando comparación.")
         return 0.0, None, None, None
     except Exception as e:
-        print(f"Error al comparar con {os.path.basename(file_patron)}: {e}")
         return 0.0, None, None, None
 
 
@@ -311,6 +277,7 @@ def ejecutar_comparacion(archivo_escaneo, callback=None):
             return None, "Error: valores NaN/Infinitos en escaneado"
         
         mostrar_mensaje("3. Ejecutando comparaciones...")
+        
         # Ejecutar comparaciones
         comparaciones = []
         piezas_list = list(CONFIG["piezas"].items())
@@ -773,13 +740,13 @@ class AppComparacion:
                 
                 # Patrón (negro, semi-transparente)
                 plotter.add_mesh(pv.PolyData(resultado["patron"]), 
-                               color='black', opacity=0.4, point_size=8, 
+                               color='black', opacity=0.25, point_size=4, 
                                render_points_as_spheres=True, label='Patrón')
                 
                 # Nube escaneada (coloreada)
                 compared_cloud_pv = pv.PolyData(resultado["comparada"])
                 
-                # Cálculo del coloreado
+                # Cálculo del coloreado (normalización lineal)
                 min_coords = np.min(resultado["patron"], axis=0)
                 max_coords = np.max(resultado["patron"], axis=0)
                 diagonal = np.linalg.norm(max_coords - min_coords)
@@ -787,14 +754,13 @@ class AppComparacion:
                 factor_seguro = max(1e-9, FACTOR_VISUAL_GRADIENTE)
                 threshold_visual = threshold_value / factor_seguro
                 
-                similitud_por_punto = np.exp(- (np.asarray(resultado["dists"]) / threshold_visual))
-                compared_cloud_pv['similitud'] = similitud_por_punto
+                similitud_por_punto = np.maximum(0.0, 1.0 - (np.asarray(resultado["dists"]) / threshold_visual))
+                compared_cloud_pv['Similitud'] = similitud_por_punto
                 
-                plotter.add_mesh(compared_cloud_pv, scalars='similitud', cmap='RdYlBu',
-                               point_size=10, render_points_as_spheres=True, 
+                plotter.add_mesh(compared_cloud_pv, scalars='Similitud', cmap='RdYlBu',
+                               point_size=5, render_points_as_spheres=True, 
                                clim=[0, 1], label='Escaneada')
                 
-                plotter.add_scalar_bar(title='Similitud Local', vertical=True)
                 plotter.add_legend()
                 plotter.reset_camera()
                 
