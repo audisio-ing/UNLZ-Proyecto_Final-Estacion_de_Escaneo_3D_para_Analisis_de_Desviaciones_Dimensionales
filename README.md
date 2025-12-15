@@ -41,6 +41,7 @@
 - **11.0** [Errores Cometidos y Lecciones Aprendidas](#errores-cometidos-y-lecciones-aprendidas)
 - **12.0** [Futuras Mejoras y Propuestas](#futuras-mejoras-y-propuestas)
 - **13.0** [Galería del Proyecto](#galería-del-proyecto)
+- **14.0** [Ejecución del Escáner](#ejecución-del-escáner)
 
 <br>
 <h1 align="center">Introducción</h1>
@@ -538,6 +539,50 @@ Imágenes detalladas del prototipo y sus componentes en funcionamiento.
     </td>
   </tr>
 </table>
+
+
+<br>
+<h1 align="center">Ejecución del Escáner</h1>
+
+Para poder ejecutar el programa que contiene la interfaz, es <strong>esencial</strong> organizar los archivos de la siguiente manera.
+
+**Estructura de Carpetas**
+
+<p>Debes crear una carpeta principal. Dentro de ella, coloca el archivo de inicio y la subcarpeta <code>Datos</code>.</p>
+
+<pre><code>Escaner 3D/
+├── Escáner 3D.vbs
+└── Datos/
+    ├── Configuracion.json
+    ├── CalibracionZoom.npz
+    ├── Logo.png
+    ├── Comparación UI.py
+    ├── Escaneo UI.py
+    ├── Main.py
+    └── Setup Camara UI.py
+</code></pre>
+
+La carpeta <b>Escaner 3D</b> debe contener:
+
+- Escáner 3D.vbs
+
+La subcarpeta <b>Datos</b> debe contener todos los archivos de código necesarios, calibraciones y configuraciones:
+
+- Configuracion.json
+- CalibracionZoom.npz
+- Logo.png
+- Comparación UI.py
+- Escaneo UI.py
+- Main.py
+- Setup Camara UI.py
+
+**Instalación y Ejecución**
+
+1. Instalar Dependencias:
+   Previo a la ejecución del código, será necesario ejecutar el archivo <b>instalar_dependencias.bat</b>. Este archivo, junto con <b>librerias.txt</b>, instalará las librerías necesarias para correr el código.
+   
+2. Ejecutar el Programa:
+   Para ejecutar el programa principal solo es necesario hacer doble clic en el archivo <b>Escáner 3D.vbs</b>, el cual mostrará la interfaz de usuario.
 
 ---
 
