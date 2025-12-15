@@ -16,8 +16,9 @@ import pyvista as pv
 CONFIG_FILE = "Configuracion.json"
 CALIBRACION = "CalibracionZoom.npz"
 
-# Directorio para guardar escaneos
-SCANS_DIR = Path.cwd() / 'Escaneos'
+# Directorio para guardar escaneos (carpeta raíz, no Datos)
+# El script se ejecuta desde Datos, así que subimos un nivel con parent
+SCANS_DIR = Path.cwd().parent / 'Escaneos'
 SCANS_DIR.mkdir(exist_ok=True)
 OUTPUT = str(SCANS_DIR / 'Escaneo.csv')
 
@@ -246,10 +247,30 @@ class EstacionEscaneo:
         # Mostrar pantalla inicial (la conexión se hace cuando se comienza el escaneo)
         self.pantalla_inicio()
     
+    def limpiar_conexion_serial(self):
+        """Cierra y limpia la conexión serial anterior."""
+        global ser
+        try:
+            if ser is not None:
+                try:
+                    ser.close()
+                except:
+                    pass
+                ser = None
+                time.sleep(0.5)
+        except:
+            pass
+    
     def conectar_arduino(self):
         """Intenta conectar a Arduino."""
         global ser
         try:
+            # Limpiar conexión anterior
+            self.limpiar_conexion_serial()
+            
+            # Esperar un poco antes de reconectar
+            time.sleep(0.5)
+            
             ser = serial.Serial(ARDUINO, BAUDRATE, timeout=2)
             time.sleep(2)
             # Limpiar buffer de entrada
@@ -1029,15 +1050,42 @@ class EstacionEscaneo:
                                font=("Segoe UI", 11, "bold"),
                                width=25, height=2,
                                bg='#3b24c8', fg='white',
-                               command=lambda: self.mostrar_grafico_3d_y_volver(nube_puntos),
+                               command=lambda: self.mostrar_grafico_3d(nube_puntos),
                                cursor="hand2",
                                relief=tk.FLAT,
                                activebackground='#5636d3',
                                activeforeground='white')
-        btn_grafico.pack(pady=20)
+        btn_grafico.pack(pady=10)
         
-        # Auto-mostrar gráfico después de 2 segundos
-        self.root.after(2000, lambda: self.mostrar_grafico_3d_y_volver(nube_puntos))
+        # Frame para botones de acción
+        frame_botones = tk.Frame(frame_cartel, bg='#1a1a2e')
+        frame_botones.pack(pady=20)
+        
+        # Botón para escanear otra pieza
+        btn_repetir = tk.Button(frame_botones,
+                               text="ESCANEAR OTRA PIEZA",
+                               font=("Segoe UI", 11, "bold"),
+                               width=25, height=2,
+                               bg='#00d966', fg='#1a1a2e',
+                               command=self.comenzar_escaneo_desde_completado,
+                               cursor="hand2",
+                               relief=tk.FLAT,
+                               activebackground='#00ff7a',
+                               activeforeground='#1a1a2e')
+        btn_repetir.pack(side='left', padx=10)
+        
+        # Botón para volver al inicio
+        btn_volver = tk.Button(frame_botones,
+                              text="VOLVER AL INICIO",
+                              font=("Segoe UI", 11, "bold"),
+                              width=25, height=2,
+                              bg='#f44336', fg='white',
+                              command=lambda: self.volver_desde_completado(),
+                              cursor="hand2",
+                              relief=tk.FLAT,
+                              activebackground='#ff5555',
+                              activeforeground='white')
+        btn_volver.pack(side='left', padx=10)
     
     def mostrar_grafico_3d(self, nube_puntos):
         """Muestra el gráfico 3D."""
@@ -1054,13 +1102,28 @@ class EstacionEscaneo:
         except Exception as e:
             self.pantalla_error("Error en gráfico 3D", f"No se pudo mostrar el gráfico:\n{str(e)}")
     
-    def mostrar_grafico_3d_y_volver(self, nube_puntos):
-        """Muestra el gráfico 3D y luego vuelve al inicio."""
+    def comenzar_escaneo_desde_completado(self):
+        """Inicia un nuevo escaneo desde la pantalla de completado."""
         try:
-            # Detener escaneo y liberar recursos
+            # Limpiar recursos
             self.escaneo_en_curso = False
             self.liberar_camara()
-            self.mostrar_grafico_3d(nube_puntos)
+            self.limpiar_conexion_serial()
+            time.sleep(0.5)
+        except:
+            pass
+        finally:
+            # Ahora comenzar nuevo escaneo
+            self.comenzar_escaneo()
+    
+    def volver_desde_completado(self):
+        """Vuelve al inicio desde pantalla de completado."""
+        try:
+            # Limpiar recursos
+            self.escaneo_en_curso = False
+            self.liberar_camara()
+            self.limpiar_conexion_serial()
+            time.sleep(0.5)
         except:
             pass
         finally:
